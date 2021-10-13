@@ -24,10 +24,10 @@ public class CoffeeShop{
       
       JTabbedPane pane = new JTabbedPane();
       JPanel panel = new JPanel();
-      
+      /*
       pane.addTab("Kitchen", new KitchenPanel());
       frame.getContentPane().add(pane);
       frame.setVisible(true);
-   
+      */
    }   
 }
