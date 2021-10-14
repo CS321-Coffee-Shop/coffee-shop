@@ -26,4 +26,11 @@ public class MenuItem{
    public double getPrice(){
       return this.price;
    }
+   public void setName(String newName){
+      this.itemName = newName;
+   }
+   public String getName(){
+      return this.itemName;
+   }
+
 }
