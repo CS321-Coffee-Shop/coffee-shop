@@ -20,4 +20,10 @@ public class MenuItem{
    public String[] getItemIngredients(){
       return this.ingredients;
    }
+   public void setPrice(double newPrice){
+      this.price = newPrice;
+   }
+   public double getPrice(){
+      return this.price;
+   }
 }
