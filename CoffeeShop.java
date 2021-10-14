@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.Scanner;
@@ -15,13 +17,10 @@ public class CoffeeShop{
    public void login(){
    
    }
-   public void openProgram(){
-      
-   }
    public void readInMenu(){
    
    }
-   public void viewMenu(){
+   public static void openMenu(){
       
    }
    public static void main(String[] args){
@@ -35,10 +34,10 @@ public class CoffeeShop{
       frame.setLocationRelativeTo(null);
       frame.setPreferredSize(new Dimension(800,600));
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   
       
       JPanel panel = new JPanel();
       panel.setLayout(new BorderLayout());
+      
       //failed attempt at making a nice background
       //ImagePanel picpanel = new ImagePanel(new ImageIcon("coffeebackground.png").getImage());
       
@@ -58,21 +57,45 @@ public class CoffeeShop{
       menuButton.setForeground(new Color(255,255,255));
       menuButton.setVerticalTextPosition(JButton.CENTER);
       menuButton.setHorizontalTextPosition(JButton.CENTER);
+      menuButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               openMenu();
+            }});
       
       preferButton.setBackground(new Color(98,57,22));
       preferButton.setForeground(new Color(255,255,255));
       preferButton.setVerticalTextPosition(JButton.CENTER);
       preferButton.setHorizontalTextPosition(JButton.CENTER);
+      preferButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               //preferences
+            }});
       
       randomButton.setBackground(new Color(202,150,104));
       randomButton.setForeground(new Color(255,255,255));
       randomButton.setVerticalTextPosition(JButton.CENTER);
       randomButton.setHorizontalTextPosition(JButton.CENTER);
+      randomButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               //random drink generator
+            }});
       
       cartButton.setBackground(new Color(255,255,255));
       cartButton.setForeground(new Color(121,76,36));
       cartButton.setVerticalTextPosition(JButton.CENTER);
       cartButton.setHorizontalTextPosition(JButton.CENTER);
+      cartButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               //view cart
+            }});
       
       //add buttons and panels to frame
       panel.add(menuButton, BorderLayout.CENTER);
