@@ -32,5 +32,9 @@ public class MenuItem{
    public String getName(){
       return this.itemName;
    }
-
+   @Override 
+   public String toString(){
+      //First idea. Feel free to change.
+      return getName() + "\n$" + getPrice() + "\nIngredients: " + getItemIngredients();
+   }
 }
