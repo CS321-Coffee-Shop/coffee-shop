@@ -7,7 +7,7 @@ public class MenuItem{
    public MenuItem(){
       this.itemName = "";
       this.price = 0.0;
-      this.ingredients = new String[];   
+      this.ingredients = new String[0];   
    }
    public MenuItem(String itemName, double price, String[] ingredients){
       this.itemName = itemName;
@@ -18,6 +18,6 @@ public class MenuItem{
       
    }
    public String[] getItemIngredients(){
-      
+      return this.ingredients;
    }
 }
