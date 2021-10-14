@@ -35,6 +35,6 @@ public class MenuItem{
    @Override 
    public String toString(){
       //First idea. Feel free to change.
-      return getName() + "\n$" + getPrice() + "\nIngredients: " + getItemIngredients();
+      return getName() + "\n$" + getPrice();
    }
 }
