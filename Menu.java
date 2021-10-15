@@ -16,6 +16,20 @@ public class Menu{
     public ArrayList<MenuItem> getMenu(){
         return menu;
     }
+    public boolean addItem(String name, double price, String[] ingredients){
+        return menu.add(new MenuItem(name, price, ingredients));
+    }
+   public boolean removeItem(String name){
+        return menu.remove(getItem(name));
+    }
+    public MenuItem getItem(String name){
+        for(MenuItem i: menu){
+            if(i.getName() == name){
+               return i;
+            }
+        }       
+        return null; 
+    }
     public double getTotalPrice(){
         
         return 0;
