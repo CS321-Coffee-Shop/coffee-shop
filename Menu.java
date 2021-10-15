@@ -19,7 +19,7 @@ public class Menu{
     public boolean addItem(String name, double price, String[] ingredients){
         return menu.add(new MenuItem(name, price, ingredients));
     }
-   public boolean removeItem(String name){
+    public boolean removeItem(String name){
         return menu.remove(getItem(name));
     }
     public MenuItem getItem(String name){
