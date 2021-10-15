@@ -19,6 +19,9 @@ public class Menu{
     public boolean addItem(String name, double price, String[] ingredients){
         return menu.add(new MenuItem(name, price, ingredients));
     }
+    public boolean addItem(MenuItem item){
+        return menu.add(item);
+    }
     public boolean removeItem(String name){
         return menu.remove(getItem(name));
     }
@@ -29,6 +32,9 @@ public class Menu{
             }
         }       
         return null; 
+    }
+    public MenuItem getItem(int i){
+        return menu.get(i);
     }
     public double getTotalPrice(){
         
