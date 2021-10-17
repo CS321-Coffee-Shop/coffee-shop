@@ -23,7 +23,7 @@ public class MenuItem{
    public String getItemIngredientsString(){
       String ingsList = "";
       for(String i: getItemIngredients()){
-         ingsList += i + " ";
+         ingsList += i + ", ";
       }
       return ingsList;
    }
