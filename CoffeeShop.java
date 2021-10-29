@@ -15,6 +15,9 @@ public class CoffeeShop{
    public static ArrayList<Employee> employeeList = new ArrayList<Employee>();
    public static ArrayList<Customer> customerList = new ArrayList<Customer>();
    public static ArrayList<MenuItem> cartList = new ArrayList<MenuItem>();
+   
+   //Menu test attempt
+   public static Menu menu = new Menu();
 
    public void login(){
    
@@ -59,7 +62,8 @@ public class CoffeeShop{
          tempIngred = tempArray[2].substring(1,tempArray[2].length()-1);
          ingArray = tempIngred.split(",");
          
-         menuItemList.add(new MenuItem(itemName,price,ingArray));
+         //menuItemList.add(new MenuItem(itemName,price,ingArray));
+         menu.addItem(itemName,price,ingArray);
       }      
    }
    
@@ -77,15 +81,16 @@ public class CoffeeShop{
             
       //Menu should be able to resize itself and add more pages if over specified limit
       JPanel panel = new JPanel();
-      panel.setLayout(new GridLayout((int)Math.sqrt(menuItemList.size())+1,(int)Math.sqrt(menuItemList.size())));
+      //panel.setLayout(new GridLayout((int)Math.sqrt(menuItemList.size())+1,(int)Math.sqrt(menuItemList.size())));
+      panel.setLayout(new GridLayout((int)Math.sqrt(menu.size())+1,(int)Math.sqrt(menu.size())));
       JButton button;
       
       //creating menu item buttons
-      for(int i=0;i<menuItemList.size();i++){
+      for(int i=0;i<menu.size();i++){
       
-         MenuItem tempItem = menuItemList.get(i);
+         MenuItem tempItem = menu.getItem(i);
         
-         button = new JButton(menuItemList.get(i).itemName);
+         button = new JButton(tempItem.getName());
          button.setBackground(new Color(169,123,76));
          button.setForeground(Color.WHITE);
          button.setVerticalTextPosition(JButton.CENTER);
@@ -103,8 +108,8 @@ public class CoffeeShop{
                   detailFrame.getContentPane().setBackground(new Color(125,83,40));
                   
                   String temp = "<html>Ingredients List:<br/><br/>";
-                  for(int j=0;j<tempItem.ingredients.length;j++){
-                     temp += tempItem.ingredients[j]+"<br/>";
+                  for(int j=0;j<tempItem.getItemIngredients().length;j++){
+                     temp += tempItem.getItemIngredients()[j]+"<br/>";
                   }
                   temp += "</html>";
                   JLabel info = new JLabel(temp);
