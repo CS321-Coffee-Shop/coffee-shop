@@ -20,6 +20,13 @@ public class MenuItem{
    public String[] getItemIngredients(){
       return this.ingredients;
    }
+   public String getItemIngredientsString(){
+      String ingsList = "";
+      for(String i: getItemIngredients()){
+         ingsList += i + ", ";
+      }
+      return ingsList;
+   }
    public void setPrice(double newPrice){
       this.price = newPrice;
    }
@@ -35,6 +42,6 @@ public class MenuItem{
    @Override 
    public String toString(){
       //First idea. Feel free to change.
-      return getName() + "\n$" + getPrice();
+      return getName() + "\n$" + getPrice() + "\nIngredients: " + getItemIngredientsString();      
    }
 }

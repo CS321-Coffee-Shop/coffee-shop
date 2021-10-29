@@ -12,4 +12,7 @@ public class Ingredients{
       this.ingredientName = ingredientName;
       this.description = description;
    }
+   public String getName(){
+      return ingredientName;
+   }
 }
