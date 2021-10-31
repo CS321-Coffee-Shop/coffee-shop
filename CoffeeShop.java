@@ -18,6 +18,12 @@ public class CoffeeShop{
    
    //Menu test attempt
    public static Menu menu = new Menu();
+   
+   public static MenuItem[] getRecommendedItems(){
+      MenuItem[] recommendations = new MenuItem[3];
+      // WIP
+      return recommendations;
+   }
 
    public void login(){
    
@@ -101,7 +107,7 @@ public class CoffeeShop{
                public void actionPerformed(ActionEvent e){
                //view menu item details
                   JFrame.setDefaultLookAndFeelDecorated(true);
-                  JFrame detailFrame = new JFrame("Menu");
+                  JFrame detailFrame = new JFrame(tempItem.getName()); // Used to say "Menu"
                   detailFrame.setLayout(new BorderLayout());
                   detailFrame.setPreferredSize(new Dimension(600,400));
                   detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
