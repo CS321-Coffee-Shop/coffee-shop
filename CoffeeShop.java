@@ -20,7 +20,11 @@ public class CoffeeShop{
    public static Menu menu = new Menu();
 
    public void login(){
-       //test edit
+	   JTextField username = new JTextField();
+	   JTextField password = new JTextField();
+	   
+	   JButton login = new JButton("Log In");
+	   //test comment
    }
    
    /*
