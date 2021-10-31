@@ -1,6 +1,7 @@
 //for database of ingredients for individual preferences
 public class Ingredients{
    
+	//descriptive ingedient name
    String ingredientName;
    String description; //possibly unnecessary
    
