@@ -26,7 +26,11 @@ public class CoffeeShop{
    }
 
    public void login(){
-   
+	   JTextField username = new JTextField();
+	   JTextField password = new JTextField();
+		   
+	   JButton login = new JButton("Log In");
+
    }
    
    /*
