@@ -16,8 +16,11 @@ public class CoffeeShop{
    public static ArrayList<Customer> customerList = new ArrayList<Customer>();
    public static ArrayList<MenuItem> cartList = new ArrayList<MenuItem>();
 
-   public void login(){
-   
+   public static void login(){
+	   JTextField username = new JTextField();
+	   JTextField password = new JTextField();
+	   
+	   JButton login = new JButton("Log In");
    }
    
    /*
@@ -150,6 +153,8 @@ public class CoffeeShop{
       frame.setVisible(true);
    }
    public static void main(String[] args) throws IOException{
+	   
+	   login();
       
       readInMenu();
       
