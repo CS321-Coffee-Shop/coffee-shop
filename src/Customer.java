@@ -54,19 +54,19 @@ public class Customer{
       return likes;
    }
    public void setLikes(ArrayList<Ingredients> likes){
-      this.likes = likes.clone();
+      this.likes = likes;
    }
    public ArrayList<Ingredients> getDislikes(){
       return dislikes;
    }
    public void setDislikes(ArrayList<Ingredients> dislikes){
-      this.dislikes = dislikes.clone();
+      this.dislikes = dislikes;
    }
    public ArrayList<Ingredients> getRestrictions(){
       return restrictions;
    }
    public void setRestrictions(ArrayList<Ingredients> restrictions){
-      this.restrictions = restrictions.clone();
+      this.restrictions = restrictions;
    }
    public boolean addLike(String name, String description){
         return likes.add(new Ingredients(name, description));
@@ -76,6 +76,9 @@ public class Customer{
     }
     public boolean removeLike(String name){
         return likes.remove(getLike(name));
+    }
+    public boolean removeLike(int i){
+        return likes.remove(getLike(i));
     }
     public Ingredients getLike(String name){
         for(Ingredients i: likes){
@@ -97,6 +100,9 @@ public class Customer{
     public boolean removeDislike(String name){
         return dislikes.remove(getDislike(name));
     }
+    public boolean removeDislike(int i){
+        return dislikes.remove(getDislike(i));
+    }
     public Ingredients getDislike(String name){
         for(Ingredients i: dislikes){
             if(i.getName() == name){
@@ -116,6 +122,9 @@ public class Customer{
     }
     public boolean removeRestriction(String name){
         return restrictions.remove(getRestriction(name));
+    }
+    public boolean removeRestriction(int i){
+        return restrictions.remove(getRestriction(i));
     }
     public Ingredients getRestriction(String name){
         for(Ingredients i: restrictions){

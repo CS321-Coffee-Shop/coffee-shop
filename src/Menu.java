@@ -36,6 +36,9 @@ public class Menu{
     public MenuItem getItem(int i){
         return menu.get(i);
     }
+    public int size(){
+        return menu.size();
+    }
     public double getTotalPrice(){
         
         return 0;
