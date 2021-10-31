@@ -1,0 +1,47 @@
+public class MenuItem{
+   
+   String itemName;
+   double price;
+   String[] ingredients;
+   
+   public MenuItem(){
+      this.itemName = "";
+      this.price = 0.0;
+      this.ingredients = new String[0];   
+   }
+   public MenuItem(String itemName, double price, String[] ingredients){
+      this.itemName = itemName;
+      this.price = price;
+      this.ingredients = ingredients;
+   }   
+   public void setItemIngredients(){
+      
+   }
+   public String[] getItemIngredients(){
+      return this.ingredients;
+   }
+   public String getItemIngredientsString(){
+      String ingsList = "";
+      for(String i: getItemIngredients()){
+         ingsList += i + ", ";
+      }
+      return ingsList;
+   }
+   public void setPrice(double newPrice){
+      this.price = newPrice;
+   }
+   public double getPrice(){
+      return this.price;
+   }
+   public void setName(String newName){
+      this.itemName = newName;
+   }
+   public String getName(){
+      return this.itemName;
+   }
+   @Override 
+   public String toString(){
+      //First idea. Feel free to change.
+      return getName() + "\n$" + getPrice() + "\nIngredients: " + getItemIngredientsString();      
+   }
+}
