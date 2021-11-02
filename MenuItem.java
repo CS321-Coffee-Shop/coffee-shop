@@ -3,16 +3,19 @@ public class MenuItem{
    String itemName;
    double price;
    String[] ingredients;
+   int score;
    
    public MenuItem(){
       this.itemName = "";
       this.price = 0.0;
       this.ingredients = new String[0];   
+      score = 0;
    }
    public MenuItem(String itemName, double price, String[] ingredients){
       this.itemName = itemName;
       this.price = price;
       this.ingredients = ingredients;
+      score = 0;
    }   
    public void setItemIngredients(){
       
@@ -22,9 +25,14 @@ public class MenuItem{
    }
    public String getItemIngredientsString(){
       String ingsList = "";
-      for(String i: getItemIngredients()){
-         ingsList += i + ", ";
+      for(int i = 0; i < ingredients.length; i++){
+         ingsList += ingredients[i];
+         
+         if(i < ingredients.length - 1){
+            ingsList += ", ";
+         }
       }
+      
       return ingsList;
    }
    public void setPrice(double newPrice){
@@ -39,6 +47,19 @@ public class MenuItem{
    public String getName(){
       return this.itemName;
    }
+   public void setScore(int newScore){
+      this.score = newScore;
+   }
+   public void incScore(){
+      this.score++;
+   }
+   public void decScore(){
+      this.score--;
+   }
+   public int getScore(){
+      return this.score;
+   }
+
    @Override 
    public String toString(){
       //First idea. Feel free to change.

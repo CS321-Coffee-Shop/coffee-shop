@@ -13,6 +13,10 @@ public class Ingredients{
       this.ingredientName = ingredientName;
       this.description = description;
    }
+   public Ingredients(String ingredientName){
+      this.ingredientName = ingredientName;
+      this.description = "";
+   }
    public String getName(){
       return ingredientName;
    }
