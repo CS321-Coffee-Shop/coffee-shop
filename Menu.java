@@ -27,7 +27,7 @@ public class Menu{
     }
     public MenuItem getItem(String name){
         for(MenuItem i: menu){
-            if(i.getName() == name){
+            if(i.getName().equals(name)){
                return i;
             }
         }       
