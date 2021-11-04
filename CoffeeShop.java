@@ -76,11 +76,152 @@ public class CoffeeShop{
       return recommendations;
    }
 
-   public void login(){
-	   JTextField username = new JTextField();
-	   JTextField password = new JTextField();
-		   
+   public static void login(){
+	   JFrame frame = new JFrame("Log In");
+	   
+	   //frame.setLayout(new GridLayout(1,1));
+       frame.setPreferredSize(new Dimension(800,600));
+       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	      
+       JPanel panel = new JPanel();
+       //panel.setLayout(new BorderLayout());
+	   
+	   JTextField customerUsername = new JTextField();	   
+	   JPasswordField customerPassword = new JPasswordField();
+	   JPasswordField employeePassword = new JPasswordField();
+	  
 	   JButton login = new JButton("Log In");
+	   
+	   JButton customerLogin = new JButton("Customer");
+	   JButton employeeLogin = new JButton("Employee");
+	   JButton signUp = new JButton("Sign Up");
+	   
+	   JButton employeeSignUp = new JButton("Employee");
+	   JButton customerSignUp = new JButton("Customer");
+	   
+	   JTextField customerFirstName = new JTextField();
+	   JTextField customerLastName = new JTextField();
+	   JTextField customerPhoneNumber = new JTextField();
+	   JTextField customerEmail = new JTextField();
+	   JTextField customerPasswordField = new JTextField();
+	   
+	   JTextField employeeFirstName = new JTextField();
+	   JTextField employeeLastName = new JTextField();
+	   JTextField employeePasswordField = new JTextField();
+	   
+	   
+	   
+	   customerLogin.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   customerLogin.setVisible(false);
+			   customerLogin.setEnabled(false);
+			   employeeLogin.setVisible(false);
+			   employeeLogin.setEnabled(false);
+			   signUp.setVisible(false);
+			   signUp.setEnabled(false);
+			   panel.add(customerUsername);
+			   panel.add(customerPassword);
+			   panel.add(login);
+			   customerUsername.setBounds(300, 250, 100, 20);
+			   customerPassword.setBounds(300, 300, 100, 20);
+			   login.setBounds(320, 350, 70, 20);
+			   panel.setLayout(new BorderLayout());
+		   }
+	   });
+	   
+	   employeeLogin.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   customerLogin.setVisible(false);
+			   customerLogin.setEnabled(false);
+			   employeeLogin.setVisible(false);
+			   employeeLogin.setEnabled(false);
+			   signUp.setVisible(false);
+			   signUp.setEnabled(false);
+			   panel.add(employeePassword);
+			   panel.add(login);
+			   employeePassword.setBounds(300, 300, 100, 20);
+			   login.setBounds(320, 350, 70, 20);
+			   panel.setLayout(new BorderLayout());
+		   }
+	   });
+	   
+	   signUp.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   customerLogin.setVisible(false);
+			   customerLogin.setEnabled(false);
+			   employeeLogin.setVisible(false);
+			   employeeLogin.setEnabled(false);
+			   signUp.setVisible(false);
+			   signUp.setEnabled(false);
+			   panel.add(customerSignUp);
+			   panel.add(employeeSignUp);
+			   customerSignUp.setBounds(300, 250, 100, 20);
+			   employeeSignUp.setBounds(300, 300, 100, 20);
+			   panel.setLayout(new BorderLayout());
+		   }
+	   });
+	   
+	   customerSignUp.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   customerSignUp.setVisible(false);
+			   customerSignUp.setEnabled(false);
+			   employeeSignUp.setVisible(false);
+			   employeeSignUp.setEnabled(false);
+			   panel.add(customerFirstName);
+			   panel.add(customerLastName);
+			   panel.add(customerPhoneNumber);
+			   panel.add(customerEmail);
+			   panel.add(customerPasswordField);
+			   customerFirstName.setBounds(300, 150, 100, 20);
+			   customerLastName.setBounds(300, 200, 100, 20);
+			   customerPhoneNumber.setBounds(300, 250, 100, 20);
+			   customerEmail.setBounds(300, 300, 100, 20);
+			   customerPasswordField.setBounds(300, 350, 100, 20);
+			   panel.setLayout(new BorderLayout());
+		   }
+	   });
+	   
+	   employeeSignUp.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   customerSignUp.setVisible(false);
+			   customerSignUp.setEnabled(false);
+			   employeeSignUp.setVisible(false);
+			   employeeSignUp.setEnabled(false);
+			   panel.add(employeeFirstName);
+			   panel.add(employeeLastName);
+			   panel.add(employeePasswordField);
+			   
+			   employeeFirstName.setBounds(300, 200, 100, 20);
+			   employeeLastName.setBounds(300, 250, 100, 20);
+			   employeePasswordField.setBounds(300, 300, 100, 20);
+			   
+			   panel.setLayout(new BorderLayout());
+		   }
+	   });
+	   
+	   /*
+	   panel.add(username);
+	   panel.add(password);
+	   panel.add(login);
+	   username.setBounds(300, 250, 100, 20);
+	   password.setBounds(300, 300, 100, 20);
+	   login.setBounds(320, 350, 70, 20);*/
+	   
+	   panel.add(customerLogin);
+	   panel.add(employeeLogin);
+	   panel.add(signUp);
+	   customerLogin.setBounds(200, 250, 100, 20);
+	   employeeLogin.setBounds(400, 250, 100, 20);
+	   signUp.setBounds(300, 300,100,20);
+	   
+	   panel.setLayout(new BorderLayout());
+	   
+	   frame.add(panel);
+	   //frame.getContentPane().add(panel);
+	      
+       frame.pack();
+       frame.setLocationRelativeTo(null);         
+       frame.setVisible(true); 
 
    }
    
@@ -216,8 +357,10 @@ public class CoffeeShop{
       frame.setVisible(true);
    }
    public static void main(String[] args) throws IOException{
+	   
+	   login();
       
-      readInMenu();
+      /*readInMenu();
       
       //set up overall frame
       JFrame.setDefaultLookAndFeelDecorated(true);
@@ -287,6 +430,9 @@ public class CoffeeShop{
       
       frame.pack();
       frame.setLocationRelativeTo(null);         
+<<<<<<< HEAD
+      frame.setVisible(true);     */
+=======
       frame.setVisible(true);      
       
       /*
@@ -299,5 +445,6 @@ public class CoffeeShop{
          System.out.println(i.getScore());
          System.out.println(i);
       }*/
+>>>>>>> main
    }   
 }
