@@ -16,12 +16,63 @@ public class CoffeeShop{
    public static ArrayList<Customer> customerList = new ArrayList<Customer>();
    public static ArrayList<MenuItem> cartList = new ArrayList<MenuItem>();
    
+   protected static Customer user = new Customer();
+   
    //Menu test attempt
    public static Menu menu = new Menu();
    
+   /*Gets a sorted array of MenuItems based on user preferences
+   */
    public static MenuItem[] getRecommendedItems(){
-      MenuItem[] recommendations = new MenuItem[3];
-      // WIP
+      MenuItem[] recommendations = new MenuItem[9];
+      MenuItem temp, temp2 = null;
+      
+      for(int i = 0; i < menu.size(); i++){
+         temp =  menu.getItem(i);
+         
+         for(String j: temp.getItemIngredients()){
+            for(Ingredients r: user.getRestrictions()){
+               if(r.getName().equals(j)){
+                 temp.setScore(-99);
+                 break;
+               }
+            }
+
+            for(Ingredients l: user.getLikes()){
+               if(temp.getScore() < -98){
+                  break;
+               }
+               
+               if(l.getName().equals(j)){
+                 temp.incScore();
+               }
+            }
+            
+            for(Ingredients d: user.getDislikes()){
+               if(temp.getScore() < -98){
+                  break;
+               }
+               
+               if(d.getName().equals(j)){
+                 temp.decScore();
+               }
+            }
+         }
+         
+         for(int z = 0; z < i + 1; z++){
+            if(recommendations[z] != null){
+               if(recommendations[z].getScore() < temp.getScore()){
+                  temp2 = recommendations[z];
+                  recommendations[z] = temp;
+                  temp = temp2;
+               }
+            }
+            else{
+               recommendations[z] = temp;
+            }  
+         }
+      }
+      
       return recommendations;
    }
 
@@ -379,6 +430,21 @@ public class CoffeeShop{
       
       frame.pack();
       frame.setLocationRelativeTo(null);         
+<<<<<<< HEAD
       frame.setVisible(true);     */
+=======
+      frame.setVisible(true);      
+      
+      /*
+      //Test recommendations
+      user.addLike("chocolate","");
+      user.addDislike("whole milk","");
+      user.addRestriction("chocolate sauce]","");
+      
+      for(MenuItem i: getRecommendedItems()){
+         System.out.println(i.getScore());
+         System.out.println(i);
+      }*/
+>>>>>>> main
    }   
 }
