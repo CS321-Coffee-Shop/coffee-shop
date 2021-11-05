@@ -27,7 +27,7 @@ public class Menu{
     }
     public MenuItem getItem(String name){
         for(MenuItem i: menu){
-            if(i.getName() == name){
+            if(i.getName().equals(name)){
                return i;
             }
         }       
@@ -39,9 +39,18 @@ public class Menu{
     public int size(){
         return menu.size();
     }
+    public void resetScores(){
+        for(MenuItem i: menu){
+           i.setScore(0);
+        }
+    }
     public double getTotalPrice(){
+        double total = 0;
         
-        return 0;
+        for(MenuItem i: menu){
+           total += i.getPrice();
+        }
+        return total;
     }
     @Override 
     public String toString(){

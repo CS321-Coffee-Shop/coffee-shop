@@ -82,7 +82,7 @@ public class Customer{
     }
     public Ingredients getLike(String name){
         for(Ingredients i: likes){
-            if(i.getName() == name){
+            if(i.getName().equals(name)){
                return i;
             }
         }       
@@ -105,7 +105,7 @@ public class Customer{
     }
     public Ingredients getDislike(String name){
         for(Ingredients i: dislikes){
-            if(i.getName() == name){
+            if(i.getName().equals(name)){
                return i;
             }
         }       
@@ -128,7 +128,7 @@ public class Customer{
     }
     public Ingredients getRestriction(String name){
         for(Ingredients i: restrictions){
-            if(i.getName() == name){
+            if(i.getName().equals(name)){
                return i;
             }
         }       

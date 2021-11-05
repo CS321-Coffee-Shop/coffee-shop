@@ -261,7 +261,7 @@ public class CoffeeShop{
          tempArray = itemInfo.get(i).split("\\|");
          itemName = tempArray[0].substring(0,tempArray[0].length());
          price = Double.parseDouble(tempArray[1]);
-         tempIngred = tempArray[2].substring(1,tempArray[2].length()-1);
+         tempIngred = tempArray[2].substring(1,tempArray[2].length()-2); // Changed -1 to -2 to remove ] from end of String
          ingArray = tempIngred.split(",");
          
          //menuItemList.add(new MenuItem(itemName,price,ingArray));
@@ -439,7 +439,7 @@ public class CoffeeShop{
       //Test recommendations
       user.addLike("chocolate","");
       user.addDislike("whole milk","");
-      user.addRestriction("chocolate sauce]","");
+      user.addRestriction("chocolate sauce","");
       
       for(MenuItem i: getRecommendedItems()){
          System.out.println(i.getScore());
