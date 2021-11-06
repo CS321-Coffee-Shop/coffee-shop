@@ -109,6 +109,14 @@ public class CoffeeShop{
 	   JTextField employeeLastName = new JTextField();
 	   JTextField employeePasswordField = new JTextField();
 	   
+	   /*String firstNameCustomer = null;
+	   String lastNameCustomer;
+	   String phoneNumberCustomer;
+	   String emailCustomer;
+	   String passwordCustomer;*/
+	   
+	   JButton signUpAsCustomer = new JButton();
+	   
 	   
 	   
 	   customerLogin.addActionListener(new ActionListener() {
@@ -172,11 +180,13 @@ public class CoffeeShop{
 			   panel.add(customerPhoneNumber);
 			   panel.add(customerEmail);
 			   panel.add(customerPasswordField);
+			   panel.add(signUpAsCustomer);
 			   customerFirstName.setBounds(300, 150, 100, 20);
 			   customerLastName.setBounds(300, 200, 100, 20);
 			   customerPhoneNumber.setBounds(300, 250, 100, 20);
 			   customerEmail.setBounds(300, 300, 100, 20);
 			   customerPasswordField.setBounds(300, 350, 100, 20);
+			   signUpAsCustomer.setBounds(300, 400, 100, 20);
 			   panel.setLayout(new BorderLayout());
 		   }
 	   });
@@ -196,6 +206,20 @@ public class CoffeeShop{
 			   employeePasswordField.setBounds(300, 300, 100, 20);
 			   
 			   panel.setLayout(new BorderLayout());
+		   }
+	   });
+	   
+	   signUpAsCustomer.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   String firstNameCustomer = customerFirstName.getText();
+			   String lastNameCustomer = customerLastName.getText();
+			   String phoneNumberCustomer = customerPhoneNumber.getText();
+			   String emailCustomer = customerEmail.getText();
+			   String passwordCustomer = customerPasswordField.getText();
+			   
+			   Customer customer = new Customer(firstNameCustomer, lastNameCustomer, phoneNumberCustomer, emailCustomer, passwordCustomer);
+			   customerList.add(customer);
+			   user = customer;
 		   }
 	   });
 	   
@@ -430,10 +454,7 @@ public class CoffeeShop{
       
       frame.pack();
       frame.setLocationRelativeTo(null);         
-<<<<<<< HEAD
-      frame.setVisible(true);     */
-=======
-      frame.setVisible(true);      
+      frame.setVisible(true);  */    
       
       /*
       //Test recommendations
@@ -445,6 +466,5 @@ public class CoffeeShop{
          System.out.println(i.getScore());
          System.out.println(i);
       }*/
->>>>>>> main
    }   
 }
