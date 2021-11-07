@@ -90,7 +90,8 @@ public class CoffeeShop{
 	   JPasswordField customerPassword = new JPasswordField();
 	   JPasswordField employeePassword = new JPasswordField();
 	  
-	   JButton login = new JButton("Log In");
+	   JButton loginAsCustomer = new JButton("Log In");
+	   JButton loginAsEmployee = new JButton("Log In");
 	   
 	   JButton customerLogin = new JButton("Customer");
 	   JButton employeeLogin = new JButton("Employee");
@@ -115,8 +116,8 @@ public class CoffeeShop{
 	   String emailCustomer;
 	   String passwordCustomer;*/
 	   
-	   JButton signUpAsCustomer = new JButton();
-	   
+	   JButton signUpAsCustomer = new JButton("Sign Up");
+	      
 	   
 	   
 	   customerLogin.addActionListener(new ActionListener() {
@@ -129,10 +130,10 @@ public class CoffeeShop{
 			   signUp.setEnabled(false);
 			   panel.add(customerUsername);
 			   panel.add(customerPassword);
-			   panel.add(login);
+			   panel.add(loginAsCustomer);
 			   customerUsername.setBounds(300, 250, 100, 20);
 			   customerPassword.setBounds(300, 300, 100, 20);
-			   login.setBounds(320, 350, 70, 20);
+			   loginAsCustomer.setBounds(320, 350, 70, 20);
 			   panel.setLayout(new BorderLayout());
 		   }
 	   });
@@ -146,9 +147,9 @@ public class CoffeeShop{
 			   signUp.setVisible(false);
 			   signUp.setEnabled(false);
 			   panel.add(employeePassword);
-			   panel.add(login);
+			   panel.add(loginAsEmployee);
 			   employeePassword.setBounds(300, 300, 100, 20);
-			   login.setBounds(320, 350, 70, 20);
+			   loginAsEmployee.setBounds(320, 350, 70, 20);
 			   panel.setLayout(new BorderLayout());
 		   }
 	   });
@@ -222,6 +223,35 @@ public class CoffeeShop{
 			   user = customer;
 		   }
 	   });
+	   
+	   loginAsCustomer.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   String email = customerUsername.getText();
+			   String password = customerPassword.getPassword().toString();
+			   
+			   for(int i = 0; i<customerList.size(); i++) {
+				   if(customerList.get(i).email.equals(email) && customerList.get(i).password.equals(password)) {
+					   user = customerList.get(i);
+					   break;
+				   }
+			   }
+		   }
+	   });
+	   
+	   loginAsEmployee.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+			   String password = employeePassword.getPassword().toString();
+			   int p = Integer.parseInt(password);
+			   
+			   for(int i = 0; i<employeeList.size(); i++) {
+				   if(employeeList.get(i).password == p) {
+					   //user = employeeList.get(i);
+					   break;
+				   }
+			   }
+		   }
+	   });
+   
 	   
 	   /*
 	   panel.add(username);
@@ -454,7 +484,7 @@ public class CoffeeShop{
       
       frame.pack();
       frame.setLocationRelativeTo(null);         
-      frame.setVisible(true);  */    
+      frame.setVisible(true);*/ 
       
       /*
       //Test recommendations
