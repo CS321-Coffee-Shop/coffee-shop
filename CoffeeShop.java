@@ -17,6 +17,7 @@ public class CoffeeShop{
    public static ArrayList<MenuItem> cartList = new ArrayList<MenuItem>();
    
    protected static Customer user = new Customer();
+   protected static Employee userE = new Employee();
    
    //Menu test attempt
    public static Menu menu = new Menu();
@@ -245,7 +246,7 @@ public class CoffeeShop{
 			   
 			   for(int i = 0; i<employeeList.size(); i++) {
 				   if(employeeList.get(i).password == p) {
-					   //user = employeeList.get(i);
+					   userE = employeeList.get(i);
 					   break;
 				   }
 			   }
