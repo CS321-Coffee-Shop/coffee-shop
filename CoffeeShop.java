@@ -77,6 +77,35 @@ public class CoffeeShop{
       return recommendations;
    }
 
+   public static void preferencesMenu(){
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame frame = new JFrame("Preference Options");
+      frame.setLayout(new BorderLayout());
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+      JPanel panel = new JPanel();
+      frame.add(panel);
+
+      JLabel lbl = new JLabel("Select one of the possible choices and click OK");
+      lbl.setVisible(true);
+
+      panel.add(lbl);
+
+      String[] choices = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
+
+      JComboBox<String> cb = new JComboBox<String>(choices);
+
+      panel.add(cb);
+
+      JButton btn = new JButton("OK");
+      panel.add(btn);
+      
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true); 
+   }
+
    public static void login(){
 	   JFrame frame = new JFrame("Log In");
 	   
@@ -413,14 +442,14 @@ public class CoffeeShop{
    }
    public static void main(String[] args) throws IOException{
 	   
-	   login();
-      
-      /*readInMenu();
+	   //login();
+      preferencesMenu();
+      //readInMenu();
       
       //set up overall frame
       JFrame.setDefaultLookAndFeelDecorated(true);
       JFrame frame = new JFrame("Coffee Shop");
-      frame.setLayout(new GridLayout(1,1));
+      /*frame.setLayout(new GridLayout(1,1));
       frame.setPreferredSize(new Dimension(800,600));
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       
@@ -485,7 +514,8 @@ public class CoffeeShop{
       
       frame.pack();
       frame.setLocationRelativeTo(null);         
-      frame.setVisible(true);*/ 
+
+      frame.setVisible(true); 
       
       /*
       //Test recommendations
