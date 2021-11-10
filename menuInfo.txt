@@ -1,6 +1,6 @@
 Cafe Latte|2.75|[whole milk,espresso shot]
 Cappuccino|2.75|[whole milk,espresso shot]
-Americano|1.75|[espresso shot, water]
+Americano|1.75|[espresso shot,water]
 Cafe Mocha|3.00|[whole milk,espresso shot,chocolate sauce]
 Cafe Au Lait|2.75|[whole milk,espresso shot]
 Espresso|2.50|[espresso shot]

@@ -291,7 +291,7 @@ public class CoffeeShop{
       JComboBox<String> cb = new JComboBox<String>();
       
       for(int i = 0; i < ingredientsList.size(); i++){
-         if(i < ingredientsList.size() && !chosenList.contains(ingredientsList.get(i))){
+         if(!chosenList.contains(ingredientsList.get(i))){
             cb.addItem(ingredientsList.get(i).getName());
          }
       }
@@ -622,6 +622,22 @@ public class CoffeeShop{
          tempIngred = tempArray[2].substring(1,tempArray[2].length()-2); // Changed -1 to -2 to remove ] from end of String
          ingArray = tempIngred.split(",");
          
+         //Read ingredients and add new ingredients to ingredientsList
+         for(String name: ingArray){
+            if(i < 1){
+               ingredientsList.add(new Ingredients(name));
+            }
+            
+            for(int j = 0; j < ingredientsList.size(); j++){
+               if(name.equals(ingredientsList.get(j).getName())){
+                  j = ingredientsList.size();
+               }
+               else if(j == ingredientsList.size() - 1){                
+                  ingredientsList.add(new Ingredients(name));
+               }
+            }
+         }
+                  
          //menuItemList.add(new MenuItem(itemName,price,ingArray));
          menu.addItem(itemName,price,ingArray);
       }      
@@ -717,13 +733,13 @@ public class CoffeeShop{
    public static void main(String[] args) throws IOException{
 	   
 	   //login();
-      preferencesMenu();
+      //preferencesMenu();
       readInMenu();
       
       //set up overall frame
       JFrame.setDefaultLookAndFeelDecorated(true);
       JFrame frame = new JFrame("Coffee Shop");
-      /*
+      
       frame.setLayout(new GridLayout(1,1));
       frame.setPreferredSize(new Dimension(800,600));
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -791,12 +807,12 @@ public class CoffeeShop{
       frame.setLocationRelativeTo(null);         
 
       frame.setVisible(true); 
-      */
+      
       
       //Test recommendations
-      ingredientsList.add(new Ingredients("chocolate"));
+      /*ingredientsList.add(new Ingredients("chocolate"));
       ingredientsList.add(new Ingredients("whole milk"));
-      ingredientsList.add(new Ingredients("chocolate sauce"));
+      ingredientsList.add(new Ingredients("chocolate sauce"));*/
 
       user.addLike(ingredientsList.get(0));
       user.addDislike(ingredientsList.get(1));
