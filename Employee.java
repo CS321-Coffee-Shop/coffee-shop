@@ -1,4 +1,4 @@
-abstract class Employee {
+public class Employee {
     int password;
     String firstName, lastName;
 
