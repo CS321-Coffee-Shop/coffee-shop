@@ -77,30 +77,213 @@ public class CoffeeShop{
       return recommendations;
    }
 
+   public static void preferencesSubMenu(int m){
+      
+   }
+   
+   public static void preferencesRemove(int option, int itemIndex){      
+      switch(option){
+         case 1:
+            user.removeLike(itemIndex);
+            break;
+            
+         case 2:
+            user.removeDislike(itemIndex);
+            break;
+            
+         default:
+            user.removeRestriction(itemIndex);
+      }
+   }
+   
+   public static void preferencesRemoveMenu(int option){
+      JFrame frame = new JFrame("Preference Options");
+      frame.setPreferredSize(new Dimension(800,600));
+   
+      JPanel panel = new JPanel();
+      frame.add(panel);
+
+      JLabel lbl = new JLabel("Select one of the possible choices and click Remove");
+      panel.add(lbl);
+      
+      String[] choices;
+
+      switch(option){
+         case 1:
+            choices = user.getLikesNames();
+            break;
+            
+         case 2:
+            choices = user.getDislikesNames();
+            break;
+            
+         default:
+            choices = user.getRestrictionsNames();
+      }
+      
+      JComboBox<String> cb = new JComboBox<String>(choices);
+
+      panel.add(cb);
+      
+      JButton removeButton = new JButton("Remove");
+	   JButton backButton = new JButton("Back");
+      
+      removeButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+            preferencesRemove(option, cb.getSelectedIndex());
+            cb.removeItemAt(cb.getSelectedIndex());
+         }
+      });
+      
+      backButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+            frame.setVisible(false); 
+            frame.dispose();
+         }
+      });
+      
+      panel.add(removeButton);
+      panel.add(backButton);
+      
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true);
+   }
+   
+   public static void preferencesAdd(int option, String name){      
+      Ingredients ing = new Ingredients(name);
+      
+      for(Ingredients i: ingredientsList){
+         if(ing.getName().equals(i.getName())){
+            ing = i;
+         }
+      }
+      
+      switch(option){
+         case 1:
+            user.removeDislike(ing.getName());
+            user.removeRestriction(ing.getName());
+            user.addLike(ing);
+            break;
+            
+         case 2:
+            user.removeLike(ing.getName());
+            user.removeRestriction(ing.getName());
+            user.addDislike(ing);
+            break;
+            
+         default:
+            user.removeLike(ing.getName());
+            user.removeDislike(ing.getName());
+            user.addRestriction(ing);
+      }
+   }
+   
+   public static void preferencesAddMenu(int option){
+      JFrame frame = new JFrame("Preference Options");
+      frame.setPreferredSize(new Dimension(800,600));
+   
+      JPanel panel = new JPanel();
+      frame.add(panel);
+
+      JLabel lbl = new JLabel("Select one of the possible choices and click Add");
+      panel.add(lbl);
+      
+      ArrayList<Ingredients> chosenList;
+      
+      switch(option){
+         case 1:
+            chosenList = user.getLikes();
+            break;
+            
+         case 2:
+            chosenList = user.getDislikes();
+            break;
+            
+         default:
+            chosenList = user.getRestrictions();
+      }
+      
+      JComboBox<String> cb = new JComboBox<String>();
+      
+      for(int i = 0; i < ingredientsList.size(); i++){
+         if(i < ingredientsList.size() && !chosenList.contains(ingredientsList.get(i))){
+            cb.addItem(ingredientsList.get(i).getName());
+         }
+      }
+      
+      panel.add(cb);
+      
+      JButton addButton = new JButton("Add");
+	   JButton backButton = new JButton("Back");
+      
+      addButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+            preferencesAdd(option, String.valueOf(cb.getSelectedItem()));
+            cb.removeItemAt(cb.getSelectedIndex());
+         }
+      });
+      
+      backButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+            frame.setVisible(false); 
+            frame.dispose();
+         }
+      });
+      
+      panel.add(addButton);
+      panel.add(backButton);
+      
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true);
+   }
+
    public static void preferencesMenu(){
       JFrame.setDefaultLookAndFeelDecorated(true);
       JFrame frame = new JFrame("Preference Options");
-      frame.setLayout(new BorderLayout());
+      //frame.setLayout(new BorderLayout());
       frame.setPreferredSize(new Dimension(800,600));
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
       JPanel panel = new JPanel();
       frame.add(panel);
 
-      JLabel lbl = new JLabel("Select one of the possible choices and click OK");
-      lbl.setVisible(true);
-
-      panel.add(lbl);
-
-      String[] choices = { "CHOICE 1","CHOICE 2", "CHOICE 3","CHOICE 4","CHOICE 5","CHOICE 6"};
-
-      JComboBox<String> cb = new JComboBox<String>(choices);
-
-      panel.add(cb);
-
-      JButton btn = new JButton("OK");
-      panel.add(btn);
+      JButton likesButton = new JButton("View Likes");
+      JButton dislikesButton = new JButton("View Dislikes");
+	   JButton restrictionsButton = new JButton("View Restrictions");
+	   JButton backButton = new JButton("Back");
       
+      likesButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+            preferencesSubMenu(1);
+         }
+      });
+      
+      dislikesButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+            preferencesSubMenu(2);
+         }
+      });
+      
+      restrictionsButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+            preferencesSubMenu(3);
+         }
+      });
+      
+      backButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+            frame.setVisible(false); 
+            frame.dispose();
+         }
+      });
+      
+      panel.add(likesButton);
+      panel.add(dislikesButton);
+      panel.add(restrictionsButton);
+      panel.add(backButton);
+
       frame.pack();
       frame.setLocationRelativeTo(null);         
       frame.setVisible(true); 
@@ -444,12 +627,13 @@ public class CoffeeShop{
 	   
 	   //login();
       preferencesMenu();
-      //readInMenu();
+      readInMenu();
       
       //set up overall frame
       JFrame.setDefaultLookAndFeelDecorated(true);
       JFrame frame = new JFrame("Coffee Shop");
-      /*frame.setLayout(new GridLayout(1,1));
+      /*
+      frame.setLayout(new GridLayout(1,1));
       frame.setPreferredSize(new Dimension(800,600));
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       
@@ -480,7 +664,7 @@ public class CoffeeShop{
          new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-               //preferences
+               preferencesMenu();
             }});
       
       randomButton.setBackground(new Color(202,150,104));
@@ -516,13 +700,17 @@ public class CoffeeShop{
       frame.setLocationRelativeTo(null);         
 
       frame.setVisible(true); 
+      */
       
-      /*
       //Test recommendations
-      user.addLike("chocolate","");
-      user.addDislike("whole milk","");
-      user.addRestriction("chocolate sauce","");
-      
+      ingredientsList.add(new Ingredients("chocolate"));
+      ingredientsList.add(new Ingredients("whole milk"));
+      ingredientsList.add(new Ingredients("chocolate sauce"));
+
+      user.addLike(ingredientsList.get(0));
+      user.addDislike(ingredientsList.get(1));
+      user.addRestriction(ingredientsList.get(2));
+      /*
       for(MenuItem i: getRecommendedItems()){
          System.out.println(i.getScore());
          System.out.println(i);
