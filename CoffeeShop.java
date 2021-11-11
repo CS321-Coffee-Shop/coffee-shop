@@ -77,310 +77,13 @@ public class CoffeeShop{
       return recommendations;
    }
 
-   public static void preferencesSubMenu(int option){
-      JFrame frame = new JFrame("Preference Options");
-      frame.setPreferredSize(new Dimension(800,600));
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   
-      JPanel panel = new JPanel();
-      frame.add(panel);
-      
-      ArrayList<Ingredients> ings;
-      String text, ingText = "";
-      
-      switch(option){
-         case 1:
-            ings = user.getLikes();
-            text = "likes";
-            break;
-            
-         case 2:
-            ings = user.getDislikes();
-            text = "dislikes";            
-            break;
-            
-         default:
-            ings = user.getRestrictions();
-            text = "restrictions";
-      }
-      
-      JLabel lbl1 = new JLabel("Your current " + text + " are: ");
-      panel.add(lbl1);
-      
-      for(int i = 0; i < ings.size(); i++){
-         ingText += ings.get(i).getName();
-         
-         if(i < ings.size() - 1){
-            ingText += ", ";
-         }
-         else{
-            ingText += ".";
-         }
-      }
-      
-      if(ings.size() < 1){
-         ingText = "None.";
-      }
-      
-      JLabel lbl2 = new JLabel(ingText);
-      panel.add(lbl2);
-      
-      JButton addButton = new JButton("Add");
-      JButton removeButton = new JButton("Remove");
-	   JButton backButton = new JButton("Back");
-      
-      addButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesAddMenu(option);
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      removeButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesRemoveMenu(option);
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      backButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesMenu();
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      panel.add(addButton);
-      panel.add(removeButton);
-      panel.add(backButton);
-      
-      frame.pack();
-      frame.setLocationRelativeTo(null);         
-      frame.setVisible(true);
-   }
-   
-   public static void preferencesRemove(int option, int itemIndex){      
-      switch(option){
-         case 1:
-            user.removeLike(itemIndex);
-            break;
-            
-         case 2:
-            user.removeDislike(itemIndex);
-            break;
-            
-         default:
-            user.removeRestriction(itemIndex);
-      }
-   }
-   
-   public static void preferencesRemoveMenu(int option){
-      JFrame frame = new JFrame("Preference Options");
-      frame.setPreferredSize(new Dimension(800,600));
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   
-      JPanel panel = new JPanel();
-      frame.add(panel);
-
-      JLabel lbl = new JLabel("Select one of the ingredients and click Remove.");
-      panel.add(lbl);
-      
-      String[] choices;
-
-      switch(option){
-         case 1:
-            choices = user.getLikesNames();
-            break;
-            
-         case 2:
-            choices = user.getDislikesNames();
-            break;
-            
-         default:
-            choices = user.getRestrictionsNames();
-      }
-      
-      JComboBox<String> cb = new JComboBox<String>(choices);
-
-      panel.add(cb);
-      
-      JButton removeButton = new JButton("Remove");
-	   JButton backButton = new JButton("Back");
-      
-      removeButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesRemove(option, cb.getSelectedIndex());
-            cb.removeItemAt(cb.getSelectedIndex());
-         }
-      });
-      
-      backButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesSubMenu(option);
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      panel.add(removeButton);
-      panel.add(backButton);
-      
-      frame.pack();
-      frame.setLocationRelativeTo(null);         
-      frame.setVisible(true);
-   }
-   
-   public static void preferencesAdd(int option, String name){      
-      Ingredients ing = new Ingredients(name);
-      
-      for(Ingredients i: ingredientsList){
-         if(ing.getName().equals(i.getName())){
-            ing = i;
-         }
-      }
-      
-      switch(option){
-         case 1:
-            user.removeDislike(ing.getName());
-            user.removeRestriction(ing.getName());
-            user.addLike(ing);
-            break;
-            
-         case 2:
-            user.removeLike(ing.getName());
-            user.removeRestriction(ing.getName());
-            user.addDislike(ing);
-            break;
-            
-         default:
-            user.removeLike(ing.getName());
-            user.removeDislike(ing.getName());
-            user.addRestriction(ing);
-      }
-   }
-   
-   public static void preferencesAddMenu(int option){
-      JFrame frame = new JFrame("Preference Options");
-      frame.setPreferredSize(new Dimension(800,600));
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   
-      JPanel panel = new JPanel();
-      frame.add(panel);
-
-      JLabel lbl = new JLabel("Select one of the ingredients and click Add.");
-      panel.add(lbl);
-      
-      ArrayList<Ingredients> chosenList;
-      
-      switch(option){
-         case 1:
-            chosenList = user.getLikes();
-            break;
-            
-         case 2:
-            chosenList = user.getDislikes();
-            break;
-            
-         default:
-            chosenList = user.getRestrictions();
-      }
-      
-      JComboBox<String> cb = new JComboBox<String>();
-      
-      for(int i = 0; i < ingredientsList.size(); i++){
-         if(!chosenList.contains(ingredientsList.get(i))){
-            cb.addItem(ingredientsList.get(i).getName());
-         }
-      }
-      
-      panel.add(cb);
-      
-      JButton addButton = new JButton("Add");
-	   JButton backButton = new JButton("Back");
-      
-      addButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesAdd(option, String.valueOf(cb.getSelectedItem()));
-            cb.removeItemAt(cb.getSelectedIndex());
-         }
-      });
-      
-      backButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesSubMenu(option);
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      panel.add(addButton);
-      panel.add(backButton);
-      
-      frame.pack();
-      frame.setLocationRelativeTo(null);         
-      frame.setVisible(true);
-   }
-
-   public static void preferencesMenu(){
-      JFrame.setDefaultLookAndFeelDecorated(true);
-      JFrame frame = new JFrame("Preference Options");
-      //frame.setLayout(new BorderLayout());
-      frame.setPreferredSize(new Dimension(800,600));
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            
-      JPanel panel = new JPanel();
-      frame.add(panel);
-
-      JButton likesButton = new JButton("View Likes");
-      JButton dislikesButton = new JButton("View Dislikes");
-	   JButton restrictionsButton = new JButton("View Restrictions");
-	   JButton backButton = new JButton("Back");
-      
-      likesButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesSubMenu(1);
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      dislikesButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesSubMenu(2);
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      restrictionsButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            preferencesSubMenu(3);
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      backButton.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-            frame.setVisible(false); 
-            frame.dispose();
-         }
-      });
-      
-      panel.add(likesButton);
-      panel.add(dislikesButton);
-      panel.add(restrictionsButton);
-      panel.add(backButton);
-
-      frame.pack();
-      frame.setLocationRelativeTo(null);         
-      frame.setVisible(true); 
-   }
-
    public static void login(){
+	   
+	   Customer c = new Customer("a", "a", "111", "abcd", "abcd");
+	   customerList.add(c);
+	   Employee e = new Employee(123, "a", "g");
+	   employeeList.add(e);
+	   
 	   JFrame frame = new JFrame("Log In");
 	   
 	   //frame.setLayout(new GridLayout(1,1));
@@ -531,11 +234,15 @@ public class CoffeeShop{
 	   loginAsCustomer.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
 			   String email = customerUsername.getText();
-			   String password = customerPassword.getPassword().toString();
+			   //String password = customerPassword.getPassword().toString();
+			   String password = String.valueOf(customerPassword.getPassword());
+			   System.out.println(email + " " + password);
 			   
 			   for(int i = 0; i<customerList.size(); i++) {
 				   if(customerList.get(i).email.equals(email) && customerList.get(i).password.equals(password)) {
 					   user = customerList.get(i);
+					   System.out.println("reached");
+					   displayMenu();
 					   break;
 				   }
 			   }
@@ -544,12 +251,14 @@ public class CoffeeShop{
 	   
 	   loginAsEmployee.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
-			   String password = employeePassword.getPassword().toString();
+			   String password = String.valueOf(employeePassword.getPassword());
 			   int p = Integer.parseInt(password);
+			   
 			   
 			   for(int i = 0; i<employeeList.size(); i++) {
 				   if(employeeList.get(i).password == p) {
 					   userE = employeeList.get(i);
+					   displayMenu();
 					   break;
 				   }
 			   }
@@ -619,25 +328,9 @@ public class CoffeeShop{
          tempArray = itemInfo.get(i).split("\\|");
          itemName = tempArray[0].substring(0,tempArray[0].length());
          price = Double.parseDouble(tempArray[1]);
-         tempIngred = tempArray[2].substring(1,tempArray[2].length()-2); // Changed -1 to -2 to remove ] from end of String
+         tempIngred = tempArray[2].substring(1,tempArray[2].length()-1);
          ingArray = tempIngred.split(",");
          
-         //Read ingredients and add new ingredients to ingredientsList
-         for(String name: ingArray){
-            if(i < 1){
-               ingredientsList.add(new Ingredients(name));
-            }
-            
-            for(int j = 0; j < ingredientsList.size(); j++){
-               if(name.equals(ingredientsList.get(j).getName())){
-                  j = ingredientsList.size();
-               }
-               else if(j == ingredientsList.size() - 1){                
-                  ingredientsList.add(new Ingredients(name));
-               }
-            }
-         }
-                  
          //menuItemList.add(new MenuItem(itemName,price,ingArray));
          menu.addItem(itemName,price,ingArray);
       }      
@@ -730,16 +423,88 @@ public class CoffeeShop{
       frame.setLocationRelativeTo(null);         
       frame.setVisible(true);
    }
+   
+   public static void displayMenu() {
+	 //set up overall frame
+	      JFrame.setDefaultLookAndFeelDecorated(true);
+	      JFrame frame = new JFrame("Coffee Shop");
+	      frame.setLayout(new GridLayout(1,1));
+	      frame.setPreferredSize(new Dimension(800,600));
+	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	      
+	      JPanel panel = new JPanel();
+	      panel.setLayout(new BorderLayout());
+	      
+	      JButton menuButton = new JButton("Menu", new ImageIcon("coffeeImage.jfif"));
+	      JButton preferButton = new JButton("Input Your Preferences");
+	      JButton randomButton = new JButton("Randomized Drink");
+	      JButton cartButton = new JButton("View Cart");
+	      
+	      menuButton.setBackground(new Color(137,84,38));
+	      menuButton.setForeground(new Color(255,255,255));
+	      menuButton.setVerticalTextPosition(JButton.CENTER);
+	      menuButton.setHorizontalTextPosition(JButton.CENTER);
+	      menuButton.addActionListener(
+	         new ActionListener(){
+	            @Override
+	            public void actionPerformed(ActionEvent e){
+	               openMenu();
+	            }});
+	      
+	      preferButton.setBackground(new Color(98,57,22));
+	      preferButton.setForeground(new Color(255,255,255));
+	      preferButton.setVerticalTextPosition(JButton.CENTER);
+	      preferButton.setHorizontalTextPosition(JButton.CENTER);
+	      preferButton.addActionListener(
+	         new ActionListener(){
+	            @Override
+	            public void actionPerformed(ActionEvent e){
+	               //preferences
+	            }});
+	      
+	      randomButton.setBackground(new Color(202,150,104));
+	      randomButton.setForeground(new Color(255,255,255));
+	      randomButton.setVerticalTextPosition(JButton.CENTER);
+	      randomButton.setHorizontalTextPosition(JButton.CENTER);
+	      randomButton.addActionListener(
+	         new ActionListener(){
+	            @Override
+	            public void actionPerformed(ActionEvent e){
+	               //random drink generator
+	            }});
+	      
+	      cartButton.setBackground(new Color(255,255,255));
+	      cartButton.setForeground(new Color(121,76,36));
+	      cartButton.setVerticalTextPosition(JButton.CENTER);
+	      cartButton.setHorizontalTextPosition(JButton.CENTER);
+	      cartButton.addActionListener(
+	         new ActionListener(){
+	            @Override
+	            public void actionPerformed(ActionEvent e){
+	               //view cart
+	            }});
+	      
+	      //add buttons and panels to frame
+	      panel.add(menuButton, BorderLayout.CENTER);
+	      panel.add(preferButton, BorderLayout.EAST);
+	      panel.add(randomButton, BorderLayout.WEST);
+	      panel.add(cartButton, BorderLayout.SOUTH);
+	      frame.getContentPane().add(panel);
+	      
+	      frame.pack();
+	      frame.setLocationRelativeTo(null);         
+	      frame.setVisible(true); 
+   }
+   
    public static void main(String[] args) throws IOException{
 	   
-	   //login();
-      //preferencesMenu();
-      readInMenu();
+	   login();
       
+      readInMenu();
+      /*
       //set up overall frame
       JFrame.setDefaultLookAndFeelDecorated(true);
       JFrame frame = new JFrame("Coffee Shop");
-      
       frame.setLayout(new GridLayout(1,1));
       frame.setPreferredSize(new Dimension(800,600));
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -771,7 +536,7 @@ public class CoffeeShop{
          new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-               preferencesMenu();
+               //preferences
             }});
       
       randomButton.setBackground(new Color(202,150,104));
@@ -805,19 +570,14 @@ public class CoffeeShop{
       
       frame.pack();
       frame.setLocationRelativeTo(null);         
-
-      frame.setVisible(true); 
+      frame.setVisible(true); */
       
-      
-      //Test recommendations
-      /*ingredientsList.add(new Ingredients("chocolate"));
-      ingredientsList.add(new Ingredients("whole milk"));
-      ingredientsList.add(new Ingredients("chocolate sauce"));*/
-
-      user.addLike(ingredientsList.get(0));
-      user.addDislike(ingredientsList.get(1));
-      user.addRestriction(ingredientsList.get(2));
       /*
+      //Test recommendations
+      user.addLike("chocolate","");
+      user.addDislike("whole milk","");
+      user.addRestriction("chocolate sauce]","");
+      
       for(MenuItem i: getRecommendedItems()){
          System.out.println(i.getScore());
          System.out.println(i);
