@@ -78,6 +78,309 @@ public class CoffeeShop{
       return recommendations;
    }
 
+   public static void preferencesSubMenu(int option){
+	   JFrame frame = new JFrame("Preference Options");
+	   frame.setPreferredSize(new Dimension(800,600));
+	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   
+	   JPanel panel = new JPanel();
+	   frame.add(panel);
+	      
+	   ArrayList<Ingredients> ings;
+	   String text, ingText = "";
+	      
+	      switch(option){
+	         case 1:
+	            ings = user.getLikes();
+	            text = "likes";
+	            break;
+	            
+	         case 2:
+	            ings = user.getDislikes();
+	            text = "dislikes";            
+	            break;
+	            
+	         default:
+	            ings = user.getRestrictions();
+	            text = "restrictions";
+	      }
+	      
+	      JLabel lbl1 = new JLabel("Your current " + text + " are: ");
+	      panel.add(lbl1);
+	      
+	      for(int i = 0; i < ings.size(); i++){
+	         ingText += ings.get(i).getName();
+	         
+	         if(i < ings.size() - 1){
+	            ingText += ", ";
+	         }
+	         else{
+	            ingText += ".";
+	         }
+	      }
+	      
+	      if(ings.size() < 1){
+	         ingText = "None.";
+	      }
+	      
+	      JLabel lbl2 = new JLabel(ingText);
+	      panel.add(lbl2);
+	      
+	      JButton addButton = new JButton("Add");
+	      JButton removeButton = new JButton("Remove");
+		   JButton backButton = new JButton("Back");
+	      
+	      addButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesAddMenu(option);
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      removeButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesRemoveMenu(option);
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      backButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesMenu();
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      panel.add(addButton);
+	      panel.add(removeButton);
+	      panel.add(backButton);
+	      
+	      frame.pack();
+	      frame.setLocationRelativeTo(null);         
+	      frame.setVisible(true);
+	   }
+	   
+	   public static void preferencesRemove(int option, int itemIndex){      
+	      switch(option){
+	         case 1:
+	            user.removeLike(itemIndex);
+	            break;
+	            
+	         case 2:
+	            user.removeDislike(itemIndex);
+	            break;
+	            
+	         default:
+	            user.removeRestriction(itemIndex);
+	      }
+	   }
+	   
+	   public static void preferencesRemoveMenu(int option){
+	      JFrame frame = new JFrame("Preference Options");
+	      frame.setPreferredSize(new Dimension(800,600));
+	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   
+	      JPanel panel = new JPanel();
+	      frame.add(panel);
+
+	      JLabel lbl = new JLabel("Select one of the ingredients and click Remove.");
+	      panel.add(lbl);
+	      
+	      String[] choices;
+
+	      switch(option){
+	         case 1:
+	            choices = user.getLikesNames();
+	            break;
+	            
+	         case 2:
+	            choices = user.getDislikesNames();
+	            break;
+	            
+	         default:
+	            choices = user.getRestrictionsNames();
+	      }
+	      
+	      JComboBox<String> cb = new JComboBox<String>(choices);
+
+	      panel.add(cb);
+	      
+	      JButton removeButton = new JButton("Remove");
+		   JButton backButton = new JButton("Back");
+	      
+	      removeButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesRemove(option, cb.getSelectedIndex());
+	            cb.removeItemAt(cb.getSelectedIndex());
+	         }
+	      });
+	      
+	      backButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesSubMenu(option);
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      panel.add(removeButton);
+	      panel.add(backButton);
+	      
+	      frame.pack();
+	      frame.setLocationRelativeTo(null);         
+	      frame.setVisible(true);
+	   }
+	   
+	   public static void preferencesAdd(int option, String name){      
+	      Ingredients ing = new Ingredients(name);
+	      
+	      for(Ingredients i: ingredientsList){
+	         if(ing.getName().equals(i.getName())){
+	            ing = i;
+	         }
+	      }
+	      
+	      switch(option){
+	         case 1:
+	            user.removeDislike(ing.getName());
+	            user.removeRestriction(ing.getName());
+	            user.addLike(ing);
+	            break;
+	            
+	         case 2:
+	            user.removeLike(ing.getName());
+	            user.removeRestriction(ing.getName());
+	            user.addDislike(ing);
+	            break;
+	            
+	         default:
+	            user.removeLike(ing.getName());
+	            user.removeDislike(ing.getName());
+	            user.addRestriction(ing);
+	      }
+	   }
+	   
+	   public static void preferencesAddMenu(int option){
+	      JFrame frame = new JFrame("Preference Options");
+	      frame.setPreferredSize(new Dimension(800,600));
+	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   
+	      JPanel panel = new JPanel();
+	      frame.add(panel);
+
+	      JLabel lbl = new JLabel("Select one of the ingredients and click Add.");
+	      panel.add(lbl);
+	      
+	      ArrayList<Ingredients> chosenList;
+	      
+	      switch(option){
+	         case 1:
+	            chosenList = user.getLikes();
+	            break;
+	            
+	         case 2:
+	            chosenList = user.getDislikes();
+	            break;
+	            
+	         default:
+	            chosenList = user.getRestrictions();
+	      }
+	      
+	      JComboBox<String> cb = new JComboBox<String>();
+	      
+	      for(int i = 0; i < ingredientsList.size(); i++){
+	         if(!chosenList.contains(ingredientsList.get(i))){
+	            cb.addItem(ingredientsList.get(i).getName());
+	         }
+	      }
+	      
+	      panel.add(cb);
+	      
+	      JButton addButton = new JButton("Add");
+		   JButton backButton = new JButton("Back");
+	      
+	      addButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesAdd(option, String.valueOf(cb.getSelectedItem()));
+	            cb.removeItemAt(cb.getSelectedIndex());
+	         }
+	      });
+	      
+	      backButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesSubMenu(option);
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      panel.add(addButton);
+	      panel.add(backButton);
+	      
+	      frame.pack();
+	      frame.setLocationRelativeTo(null);         
+	      frame.setVisible(true);
+	   }
+
+	   public static void preferencesMenu(){
+	      JFrame.setDefaultLookAndFeelDecorated(true);
+	      JFrame frame = new JFrame("Preference Options");
+	      //frame.setLayout(new BorderLayout());
+	      frame.setPreferredSize(new Dimension(800,600));
+	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	            
+	      JPanel panel = new JPanel();
+	      frame.add(panel);
+
+	      JButton likesButton = new JButton("View Likes");
+	      JButton dislikesButton = new JButton("View Dislikes");
+		   JButton restrictionsButton = new JButton("View Restrictions");
+		   JButton backButton = new JButton("Back");
+	      
+	      likesButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesSubMenu(1);
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      dislikesButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesSubMenu(2);
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      restrictionsButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            preferencesSubMenu(3);
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      backButton.addActionListener(new ActionListener() {
+			   public void actionPerformed(ActionEvent e) {
+	            frame.setVisible(false); 
+	            frame.dispose();
+	         }
+	      });
+	      
+	      panel.add(likesButton);
+	      panel.add(dislikesButton);
+	      panel.add(restrictionsButton);
+	      panel.add(backButton);
+
+	      frame.pack();
+	      frame.setLocationRelativeTo(null);         
+	      frame.setVisible(true); 
+	   }
+
    public static void login(){
       
       Customer c = new Customer("a", "a", "111", "abcd", "abcd");
@@ -336,8 +639,24 @@ public class CoffeeShop{
          tempArray = itemInfo.get(i).split("\\|");
          itemName = tempArray[0].substring(0,tempArray[0].length());
          price = Double.parseDouble(tempArray[1]);
-         tempIngred = tempArray[2].substring(1,tempArray[2].length()-1);
+         tempIngred = tempArray[2].substring(1,tempArray[2].length()-2);
          ingArray = tempIngred.split(",");
+         
+         for(String name: ingArray){
+             if(i < 1){
+                ingredientsList.add(new Ingredients(name));
+             }
+             
+             //add new Ingredients to ingredientsList
+             for(int j = 0; j < ingredientsList.size(); j++){
+                if(name.equals(ingredientsList.get(j).getName())){
+                   j = ingredientsList.size();
+                }
+                else if(j == ingredientsList.size() - 1){                
+                   ingredientsList.add(new Ingredients(name));
+                }
+             }
+          }
          
          menu.addItem(itemName,price,ingArray);
       }      
@@ -585,7 +904,7 @@ public class CoffeeShop{
          new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-               //preferences
+               preferencesMenu();
             }});
       
       randomButton.setBackground(new Color(202,150,104));
@@ -619,8 +938,8 @@ public class CoffeeShop{
       
       frame.pack();
       frame.setLocationRelativeTo(null);         
-      frame.setVisible(true); */
-      
+      frame.setVisible(true); 
+      /*
       /*
       //Test recommendations
       user.addLike("chocolate","");
