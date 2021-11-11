@@ -138,4 +138,31 @@ public class Customer{
         return restrictions.get(i);
     }
    
+    public String[] getLikesNames(){
+        String[] names = new String[likes.size()];
+        
+        for(int i = 0; i < likes.size(); i++){
+            names[i] = likes.get(i).getName();
+        }
+        
+        return names;
+    }
+    public String[] getDislikesNames(){
+        String[] names = new String[dislikes.size()];
+        
+        for(int i = 0; i < dislikes.size(); i++){
+            names[i] = dislikes.get(i).getName();
+        }
+        
+        return names;
+    }
+    public String[] getRestrictionsNames(){
+        String[] names = new String[restrictions.size()];
+        
+        for(int i = 0; i < restrictions.size(); i++){
+            names[i] = restrictions.get(i).getName();
+        }
+        
+        return names;
+    }
 }
