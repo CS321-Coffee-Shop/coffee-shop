@@ -15,6 +15,7 @@ public class CoffeeShop{
    public static ArrayList<Employee> employeeList = new ArrayList<Employee>();
    public static ArrayList<Customer> customerList = new ArrayList<Customer>();
    public static ArrayList<MenuItem> cartList = new ArrayList<MenuItem>();
+   public static ArrayList<MenuItem> orderQueue = new ArrayList<MenuItem>();
    
    protected static Customer user = new Customer();
    protected static Employee userE = new Employee();
@@ -34,18 +35,18 @@ public class CoffeeShop{
          for(String j: temp.getItemIngredients()){
             for(Ingredients r: user.getRestrictions()){
                if(r.getName().equals(j)){
-                 temp.setScore(-99);
-                 break;
+                  temp.setScore(-99);
+                  break;
                }
             }
-
+         
             for(Ingredients l: user.getLikes()){
                if(temp.getScore() < -98){
                   break;
                }
                
                if(l.getName().equals(j)){
-                 temp.incScore();
+                  temp.incScore();
                }
             }
             
@@ -55,7 +56,7 @@ public class CoffeeShop{
                }
                
                if(d.getName().equals(j)){
-                 temp.decScore();
+                  temp.decScore();
                }
             }
          }
@@ -76,17 +77,17 @@ public class CoffeeShop{
       
       return recommendations;
    }
-   
+
    public static void preferencesSubMenu(int option){
-	      JFrame frame = new JFrame("Preference Options");
-	      frame.setPreferredSize(new Dimension(800,600));
-	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   JFrame frame = new JFrame("Preference Options");
+	   frame.setPreferredSize(new Dimension(800,600));
+	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   
-	      JPanel panel = new JPanel();
-	      frame.add(panel);
+	   JPanel panel = new JPanel();
+	   frame.add(panel);
 	      
-	      ArrayList<Ingredients> ings;
-	      String text, ingText = "";
+	   ArrayList<Ingredients> ings;
+	   String text, ingText = "";
 	      
 	      switch(option){
 	         case 1:
@@ -381,218 +382,225 @@ public class CoffeeShop{
 	   }
 
    public static void login(){
-	   
-	   Customer c = new Customer("a", "a", "111", "abcd", "abcd");
-	   customerList.add(c);
-	   Employee e = new Employee(123, "a", "g");
-	   employeeList.add(e);
-	   
-	   JFrame frame = new JFrame("Log In");
-	   
-	   //frame.setLayout(new GridLayout(1,1));
-       frame.setPreferredSize(new Dimension(800,600));
-       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      
-       JPanel panel = new JPanel();
-       //panel.setLayout(new BorderLayout());
-	   
-	   JTextField customerUsername = new JTextField();	   
-	   JPasswordField customerPassword = new JPasswordField();
-	   JPasswordField employeePassword = new JPasswordField();
-	  
-	   JButton loginAsCustomer = new JButton("Log In");
-	   JButton loginAsEmployee = new JButton("Log In");
-	   
-	   JButton customerLogin = new JButton("Customer");
-	   JButton employeeLogin = new JButton("Employee");
-	   JButton signUp = new JButton("Sign Up");
-	   
-	   JButton employeeSignUp = new JButton("Employee");
-	   JButton customerSignUp = new JButton("Customer");
-	   
-	   JTextField customerFirstName = new JTextField();
-	   JTextField customerLastName = new JTextField();
-	   JTextField customerPhoneNumber = new JTextField();
-	   JTextField customerEmail = new JTextField();
-	   JTextField customerPasswordField = new JTextField();
-	   
-	   JTextField employeeFirstName = new JTextField();
-	   JTextField employeeLastName = new JTextField();
-	   JTextField employeePasswordField = new JTextField();
-	   
-	   /*String firstNameCustomer = null;
-	   String lastNameCustomer;
-	   String phoneNumberCustomer;
-	   String emailCustomer;
-	   String passwordCustomer;*/
-	   
-	   JButton signUpAsCustomer = new JButton("Sign Up");
-	      
-	   
-	   
-	   customerLogin.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-			   customerLogin.setVisible(false);
-			   customerLogin.setEnabled(false);
-			   employeeLogin.setVisible(false);
-			   employeeLogin.setEnabled(false);
-			   signUp.setVisible(false);
-			   signUp.setEnabled(false);
-			   panel.add(customerUsername);
-			   panel.add(customerPassword);
-			   panel.add(loginAsCustomer);
-			   customerUsername.setBounds(300, 250, 100, 20);
-			   customerPassword.setBounds(300, 300, 100, 20);
-			   loginAsCustomer.setBounds(320, 350, 70, 20);
-			   panel.setLayout(new BorderLayout());
-		   }
-	   });
-	   
-	   employeeLogin.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-			   customerLogin.setVisible(false);
-			   customerLogin.setEnabled(false);
-			   employeeLogin.setVisible(false);
-			   employeeLogin.setEnabled(false);
-			   signUp.setVisible(false);
-			   signUp.setEnabled(false);
-			   panel.add(employeePassword);
-			   panel.add(loginAsEmployee);
-			   employeePassword.setBounds(300, 300, 100, 20);
-			   loginAsEmployee.setBounds(320, 350, 70, 20);
-			   panel.setLayout(new BorderLayout());
-		   }
-	   });
-	   
-	   signUp.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-			   customerLogin.setVisible(false);
-			   customerLogin.setEnabled(false);
-			   employeeLogin.setVisible(false);
-			   employeeLogin.setEnabled(false);
-			   signUp.setVisible(false);
-			   signUp.setEnabled(false);
-			   panel.add(customerSignUp);
-			   panel.add(employeeSignUp);
-			   customerSignUp.setBounds(300, 250, 100, 20);
-			   employeeSignUp.setBounds(300, 300, 100, 20);
-			   panel.setLayout(new BorderLayout());
-		   }
-	   });
-	   
-	   customerSignUp.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-			   customerSignUp.setVisible(false);
-			   customerSignUp.setEnabled(false);
-			   employeeSignUp.setVisible(false);
-			   employeeSignUp.setEnabled(false);
-			   panel.add(customerFirstName);
-			   panel.add(customerLastName);
-			   panel.add(customerPhoneNumber);
-			   panel.add(customerEmail);
-			   panel.add(customerPasswordField);
-			   panel.add(signUpAsCustomer);
-			   customerFirstName.setBounds(300, 150, 100, 20);
-			   customerLastName.setBounds(300, 200, 100, 20);
-			   customerPhoneNumber.setBounds(300, 250, 100, 20);
-			   customerEmail.setBounds(300, 300, 100, 20);
-			   customerPasswordField.setBounds(300, 350, 100, 20);
-			   signUpAsCustomer.setBounds(300, 400, 100, 20);
-			   panel.setLayout(new BorderLayout());
-		   }
-	   });
-	   
-	   employeeSignUp.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-			   customerSignUp.setVisible(false);
-			   customerSignUp.setEnabled(false);
-			   employeeSignUp.setVisible(false);
-			   employeeSignUp.setEnabled(false);
-			   panel.add(employeeFirstName);
-			   panel.add(employeeLastName);
-			   panel.add(employeePasswordField);
-			   
-			   employeeFirstName.setBounds(300, 200, 100, 20);
-			   employeeLastName.setBounds(300, 250, 100, 20);
-			   employeePasswordField.setBounds(300, 300, 100, 20);
-			   
-			   panel.setLayout(new BorderLayout());
-		   }
-	   });
-	   
-	   signUpAsCustomer.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-			   String firstNameCustomer = customerFirstName.getText();
-			   String lastNameCustomer = customerLastName.getText();
-			   String phoneNumberCustomer = customerPhoneNumber.getText();
-			   String emailCustomer = customerEmail.getText();
-			   String passwordCustomer = customerPasswordField.getText();
-			   
-			   Customer customer = new Customer(firstNameCustomer, lastNameCustomer, phoneNumberCustomer, emailCustomer, passwordCustomer);
-			   customerList.add(customer);
-			   user = customer;
-		   }
-	   });
-	   
-	   loginAsCustomer.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-			   String email = customerUsername.getText();
-			   //String password = customerPassword.getPassword().toString();
-			   String password = String.valueOf(customerPassword.getPassword());
-			   //System.out.println(email + " " + password);
-			   
-			   for(int i = 0; i<customerList.size(); i++) {
-				   if(customerList.get(i).email.equals(email) && customerList.get(i).password.equals(password)) {
-					   user = customerList.get(i);
-					  // System.out.println("reached");
-					   displayMenu();
-					   break;
-				   }
-			   }
-		   }
-	   });
-	   
-	   loginAsEmployee.addActionListener(new ActionListener() {
-		   public void actionPerformed(ActionEvent e) {
-			   String password = String.valueOf(employeePassword.getPassword());
-			   int p = Integer.parseInt(password);
-			   
-			   
-			   for(int i = 0; i<employeeList.size(); i++) {
-				   if(employeeList.get(i).password == p) {
-					   userE = employeeList.get(i);
-					   displayMenu();
-					   break;
-				   }
-			   }
-		   }
-	   });
+      
+      Customer c = new Customer("a", "a", "111", "abcd", "abcd");
+      customerList.add(c);
+      Employee e = new Employee(123, "a", "g");
+      employeeList.add(e);
+      
+      JFrame frame = new JFrame("Log In");
+      
+      //frame.setLayout(new GridLayout(1,1));
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+      JPanel panel = new JPanel();
+      panel.setLayout(new BorderLayout());
+      
+      JLabel userName = new JLabel("Email");
+      JLabel password = new JLabel("Password");
+      
+      JTextField customerUsername = new JTextField();	   
+      JPasswordField customerPassword = new JPasswordField();
+      JPasswordField employeePassword = new JPasswordField();
+     
+      JButton loginAsCustomer = new JButton("Log In");
+      JButton loginAsEmployee = new JButton("Log In");
+      
+      JButton customerLogin = new JButton("Customer");
+      JButton employeeLogin = new JButton("Employee");
+      JButton signUp = new JButton("Create Account");
+      
+      JButton employeeSignUp = new JButton("Employee");
+      JButton customerSignUp = new JButton("Customer");
+      
+      JTextField customerFirstName = new JTextField("First Name");
+      JTextField customerLastName = new JTextField("Last Name");
+      JTextField customerPhoneNumber = new JTextField("Phone Number");
+      JTextField customerEmail = new JTextField("Email");
+      JTextField customerPasswordField = new JTextField("Password");
+      
+      JTextField employeeFirstName = new JTextField("First Name");
+      JTextField employeeLastName = new JTextField("Last Name");
+      JTextField employeePhoneNumber = new JTextField("Phone Number");
+      JTextField employeeEmail = new JTextField("Email");
+      JTextField employeePasswordField = new JTextField("Password");
+      
+      JButton signUpAsCustomer = new JButton("Sign Up");
+       
+      customerLogin.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               customerLogin.setVisible(false);
+               customerLogin.setEnabled(false);
+               employeeLogin.setVisible(false);
+               employeeLogin.setEnabled(false);
+               signUp.setVisible(false);
+               signUp.setEnabled(false);
+               panel.add(customerUsername);
+               panel.add(customerPassword);
+               panel.add(loginAsCustomer);
+               customerUsername.setBounds(300, 250, 100, 20);
+               customerPassword.setBounds(300, 300, 100, 20);
+               loginAsCustomer.setBounds(320, 350, 70, 20);
+               panel.setLayout(new BorderLayout());
+            }
+         });
+      
+      employeeLogin.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               customerLogin.setVisible(false);
+               customerLogin.setEnabled(false);
+               employeeLogin.setVisible(false);
+               employeeLogin.setEnabled(false);
+               signUp.setVisible(false);
+               signUp.setEnabled(false);
+               panel.add(employeePassword);
+               panel.add(loginAsEmployee);
+               employeePassword.setBounds(300, 300, 100, 20);
+               loginAsEmployee.setBounds(320, 350, 70, 20);
+               panel.setLayout(new BorderLayout());
+            }
+         });
+      
+      signUp.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               customerLogin.setVisible(false);
+               customerLogin.setEnabled(false);
+               employeeLogin.setVisible(false);
+               employeeLogin.setEnabled(false);
+               signUp.setVisible(false);
+               signUp.setEnabled(false);
+               panel.add(customerSignUp);
+               panel.add(employeeSignUp);
+               customerSignUp.setBounds(300, 250, 100, 20);
+               employeeSignUp.setBounds(300, 300, 100, 20);
+               panel.setLayout(new BorderLayout());
+            }
+         });
+      
+      customerSignUp.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               customerSignUp.setVisible(false);
+               customerSignUp.setEnabled(false);
+               employeeSignUp.setVisible(false);
+               employeeSignUp.setEnabled(false);
+               panel.add(customerFirstName);
+               panel.add(customerLastName);
+               panel.add(customerPhoneNumber);
+               panel.add(customerEmail);
+               panel.add(customerPasswordField);
+               panel.add(signUpAsCustomer);
+               customerFirstName.setBounds(300, 150, 100, 20);
+               customerLastName.setBounds(300, 200, 100, 20);
+               customerPhoneNumber.setBounds(300, 250, 100, 20);
+               customerEmail.setBounds(300, 300, 100, 20);
+               customerPasswordField.setBounds(300, 350, 100, 20);
+               signUpAsCustomer.setBounds(300, 400, 100, 20);
+               panel.setLayout(new BorderLayout());
+            }
+         });
+      
+      employeeSignUp.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               customerSignUp.setVisible(false);
+               customerSignUp.setEnabled(false);
+               employeeSignUp.setVisible(false);
+               employeeSignUp.setEnabled(false);
+               panel.add(employeeFirstName);
+               panel.add(employeeLastName);
+               panel.add(employeePhoneNumber);
+               panel.add(employeeEmail);
+               panel.add(employeePasswordField);
+            
+               employeeFirstName.setBounds(300, 200, 100, 20);
+               employeeLastName.setBounds(300, 250, 100, 20);
+               employeePasswordField.setBounds(300, 300, 100, 20);
+            
+               panel.setLayout(new BorderLayout());
+            }
+         });
+      
+      signUpAsCustomer.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               String firstNameCustomer = customerFirstName.getText();
+               String lastNameCustomer = customerLastName.getText();
+               String phoneNumberCustomer = customerPhoneNumber.getText();
+               String emailCustomer = customerEmail.getText();
+               String passwordCustomer = customerPasswordField.getText();
+            
+               Customer customer = new Customer(firstNameCustomer, lastNameCustomer, phoneNumberCustomer, emailCustomer, passwordCustomer);
+               customerList.add(customer);
+               user = customer;
+            }
+         });
+      
+      loginAsCustomer.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               String email = customerUsername.getText();
+            //String password = customerPassword.getPassword().toString();
+               String password = String.valueOf(customerPassword.getPassword());
+               System.out.println(email + " " + password);
+            
+               for(int i = 0; i<customerList.size(); i++) {
+                  if(customerList.get(i).email.equals(email) && customerList.get(i).password.equals(password)) {
+                     user = customerList.get(i);
+                     System.out.println("reached");
+                     displayMenu();
+                     break;
+                  }
+               }
+            }
+         });
+      
+      loginAsEmployee.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               String password = String.valueOf(employeePassword.getPassword());
+               int p = Integer.parseInt(password);
+            
+            
+               for(int i = 0; i<employeeList.size(); i++) {
+                  if(employeeList.get(i).password == p) {
+                     userE = employeeList.get(i);
+                     displayMenu();
+                     break;
+                  }
+               }
+            }
+         });
    
-	   
-	   /*
-	   panel.add(username);
-	   panel.add(password);
-	   panel.add(login);
-	   username.setBounds(300, 250, 100, 20);
-	   password.setBounds(300, 300, 100, 20);
-	   login.setBounds(320, 350, 70, 20);*/
-	   
-	   panel.add(customerLogin);
-	   panel.add(employeeLogin);
-	   panel.add(signUp);
-	   customerLogin.setBounds(200, 250, 100, 20);
-	   employeeLogin.setBounds(400, 250, 100, 20);
-	   signUp.setBounds(300, 300,100,20);
-	   
-	   panel.setLayout(new BorderLayout());
-	   
-	   frame.add(panel);
-	   //frame.getContentPane().add(panel);
-	      
-       frame.pack();
-       frame.setLocationRelativeTo(null);         
-       frame.setVisible(true); 
-
+      
+      /*
+      panel.add(username);
+      panel.add(password);
+      panel.add(login);
+      username.setBounds(300, 250, 100, 20);
+      password.setBounds(300, 300, 100, 20);
+      login.setBounds(320, 350, 70, 20);*/
+      
+      panel.add(customerLogin);
+      panel.add(employeeLogin);
+      panel.add(signUp);
+      customerLogin.setBounds(200, 250, 100, 20);
+      employeeLogin.setBounds(400, 250, 100, 20);
+      signUp.setBounds(300, 300,100,20);
+      
+      panel.setLayout(new BorderLayout());
+      
+      frame.add(panel);
+      //frame.getContentPane().add(panel);
+         
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true); 
+   
    }
    
    /*
@@ -631,7 +639,7 @@ public class CoffeeShop{
          tempArray = itemInfo.get(i).split("\\|");
          itemName = tempArray[0].substring(0,tempArray[0].length());
          price = Double.parseDouble(tempArray[1]);
-         tempIngred = tempArray[2].substring(1,tempArray[2].length()-2); //changed -1 to -2
+         tempIngred = tempArray[2].substring(1,tempArray[2].length()-2);
          ingArray = tempIngred.split(",");
          
          for(String name: ingArray){
@@ -639,6 +647,7 @@ public class CoffeeShop{
                 ingredientsList.add(new Ingredients(name));
              }
              
+             //add new Ingredients to ingredientsList
              for(int j = 0; j < ingredientsList.size(); j++){
                 if(name.equals(ingredientsList.get(j).getName())){
                    j = ingredientsList.size();
@@ -649,7 +658,6 @@ public class CoffeeShop{
              }
           }
          
-         //menuItemList.add(new MenuItem(itemName,price,ingArray));
          menu.addItem(itemName,price,ingArray);
       }      
    }
@@ -713,6 +721,7 @@ public class CoffeeShop{
                         @Override
                         public void actionPerformed(ActionEvent e){
                         //add to cart
+                           cartList.add(tempItem);
                         }});      
                
                   detailFrame.add(cartButton, BorderLayout.SOUTH);   
@@ -733,6 +742,45 @@ public class CoffeeShop{
             @Override
             public void actionPerformed(ActionEvent e){
                //view cart
+                  JFrame.setDefaultLookAndFeelDecorated(true);
+                  JFrame detailFrame = new JFrame("Your Cart");
+                  detailFrame.setLayout(new BorderLayout());
+                  detailFrame.setPreferredSize(new Dimension(600,400));
+                  detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                  detailFrame.getContentPane().setBackground(new Color(125,83,40));
+                  
+                  double priceTotal = 0.0;
+                  String temp = "<html>Your Cart:<br/><br/>";
+                  for(int j=0;j<cartList.size();j++){
+                     priceTotal += cartList.get(j).getPrice();
+                     temp += cartList.get(j).getName()+"\t"+cartList.get(j).getPrice()+"<br/><br/>";
+                  }
+                  temp += "<br/>Total: "+ priceTotal +"</html>";
+                  JLabel info = new JLabel(temp);
+                  info.setForeground(new Color(255,255,255));
+                  detailFrame.getContentPane().add(info);
+                  
+                  JButton checkOutButton = new JButton("Check Out");
+                  checkOutButton.setBackground(new Color(255,255,255));
+                  checkOutButton.setForeground(new Color(121,76,36));
+                  checkOutButton.setVerticalTextPosition(JButton.CENTER);
+                  checkOutButton.setHorizontalTextPosition(JButton.CENTER);
+                  
+                  JButton editButton = new JButton("Edit Cart");
+                  editButton.setBackground(new Color(255,255,255));
+                  editButton.setForeground(new Color(121,76,36));
+                  editButton.setVerticalTextPosition(JButton.CENTER);
+                  editButton.setHorizontalTextPosition(JButton.CENTER);
+                  
+                  JPanel bottomPanel = new JPanel();
+                  bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+                  
+                  bottomPanel.add(editButton);
+                  bottomPanel.add(checkOutButton);   
+                  detailFrame.add(bottomPanel, BorderLayout.SOUTH);
+                  detailFrame.pack();
+                  detailFrame.setLocationRelativeTo(null);         
+                  detailFrame.setVisible(true);
             }});      
       
       frame.add(cartButton, BorderLayout.SOUTH);
@@ -743,80 +791,82 @@ public class CoffeeShop{
    }
    
    public static void displayMenu() {
-	 //set up overall frame
-	      JFrame.setDefaultLookAndFeelDecorated(true);
-	      JFrame frame = new JFrame("Coffee Shop");
-	      frame.setLayout(new GridLayout(1,1));
-	      frame.setPreferredSize(new Dimension(800,600));
-	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	      
-	      JPanel panel = new JPanel();
-	      panel.setLayout(new BorderLayout());
-	      
-	      JButton menuButton = new JButton("Menu", new ImageIcon("coffeeImage.jfif"));
-	      JButton preferButton = new JButton("Input Your Preferences");
-	      JButton randomButton = new JButton("Randomized Drink");
-	      JButton cartButton = new JButton("View Cart");
-	      
-	      menuButton.setBackground(new Color(137,84,38));
-	      menuButton.setForeground(new Color(255,255,255));
-	      menuButton.setVerticalTextPosition(JButton.CENTER);
-	      menuButton.setHorizontalTextPosition(JButton.CENTER);
-	      menuButton.addActionListener(
-	         new ActionListener(){
-	            @Override
-	            public void actionPerformed(ActionEvent e){
-	               openMenu();
-	            }});
-	      
-	      preferButton.setBackground(new Color(98,57,22));
-	      preferButton.setForeground(new Color(255,255,255));
-	      preferButton.setVerticalTextPosition(JButton.CENTER);
-	      preferButton.setHorizontalTextPosition(JButton.CENTER);
-	      preferButton.addActionListener(
-	         new ActionListener(){
-	            @Override
-	            public void actionPerformed(ActionEvent e){
-	               preferencesMenu();
-	            }});
-	      
-	      randomButton.setBackground(new Color(202,150,104));
-	      randomButton.setForeground(new Color(255,255,255));
-	      randomButton.setVerticalTextPosition(JButton.CENTER);
-	      randomButton.setHorizontalTextPosition(JButton.CENTER);
-	      randomButton.addActionListener(
-	         new ActionListener(){
-	            @Override
-	            public void actionPerformed(ActionEvent e){
-	               //random drink generator
-	            }});
-	      
-	      cartButton.setBackground(new Color(255,255,255));
-	      cartButton.setForeground(new Color(121,76,36));
-	      cartButton.setVerticalTextPosition(JButton.CENTER);
-	      cartButton.setHorizontalTextPosition(JButton.CENTER);
-	      cartButton.addActionListener(
-	         new ActionListener(){
-	            @Override
-	            public void actionPerformed(ActionEvent e){
-	               //view cart
-	            }});
-	      
-	      //add buttons and panels to frame
-	      panel.add(menuButton, BorderLayout.CENTER);
-	      panel.add(preferButton, BorderLayout.EAST);
-	      panel.add(randomButton, BorderLayout.WEST);
-	      panel.add(cartButton, BorderLayout.SOUTH);
-	      frame.getContentPane().add(panel);
-	      
-	      frame.pack();
-	      frame.setLocationRelativeTo(null);         
-	      frame.setVisible(true); 
+    //set up overall frame
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame frame = new JFrame("Coffee Shop");
+      frame.setLayout(new GridLayout(1,1));
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+      JPanel panel = new JPanel();
+      panel.setLayout(new BorderLayout());
+         
+      JButton menuButton = new JButton("Menu", new ImageIcon("coffeeImage.jfif"));
+      JButton preferButton = new JButton("Input Your Preferences");
+      JButton randomButton = new JButton("Randomized Drink");
+      JButton cartButton = new JButton("View Cart");
+         
+      menuButton.setBackground(new Color(137,84,38));
+      menuButton.setForeground(new Color(255,255,255));
+      menuButton.setVerticalTextPosition(JButton.CENTER);
+      menuButton.setHorizontalTextPosition(JButton.CENTER);
+      menuButton.addActionListener(
+            new ActionListener(){
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  openMenu();
+               }});
+         
+      preferButton.setBackground(new Color(98,57,22));
+      preferButton.setForeground(new Color(255,255,255));
+      preferButton.setVerticalTextPosition(JButton.CENTER);
+      preferButton.setHorizontalTextPosition(JButton.CENTER);
+      preferButton.addActionListener(
+            new ActionListener(){
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  //preferences
+               }});
+         
+      randomButton.setBackground(new Color(202,150,104));
+      randomButton.setForeground(new Color(255,255,255));
+      randomButton.setVerticalTextPosition(JButton.CENTER);
+      randomButton.setHorizontalTextPosition(JButton.CENTER);
+      randomButton.addActionListener(
+            new ActionListener(){
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  //random drink generator
+               }});
+         
+      cartButton.setBackground(new Color(255,255,255));
+      cartButton.setForeground(new Color(121,76,36));
+      cartButton.setVerticalTextPosition(JButton.CENTER);
+      cartButton.setHorizontalTextPosition(JButton.CENTER);
+      cartButton.addActionListener(
+            new ActionListener(){
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  //view cart
+                  
+                  
+               }});
+         
+         //add buttons and panels to frame
+      panel.add(menuButton, BorderLayout.CENTER);
+      panel.add(preferButton, BorderLayout.EAST);
+      panel.add(randomButton, BorderLayout.WEST);
+      panel.add(cartButton, BorderLayout.SOUTH);
+      frame.getContentPane().add(panel);
+         
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true); 
    }
    
    public static void main(String[] args) throws IOException{
-	   
-	   login();
+      
+      login();
       
       readInMenu();
       /*
@@ -854,7 +904,7 @@ public class CoffeeShop{
          new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
-               //preferences
+               preferencesMenu();
             }});
       
       randomButton.setBackground(new Color(202,150,104));
@@ -888,8 +938,8 @@ public class CoffeeShop{
       
       frame.pack();
       frame.setLocationRelativeTo(null);         
-      frame.setVisible(true); */
-      
+      frame.setVisible(true); 
+      /*
       /*
       //Test recommendations
       user.addLike("chocolate","");
