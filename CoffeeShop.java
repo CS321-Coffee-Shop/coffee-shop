@@ -825,7 +825,7 @@ public class CoffeeShop{
             new ActionListener(){
                @Override
                public void actionPerformed(ActionEvent e){
-                  //preferences
+                  preferencesMenu();
                }});
          
       randomButton.setBackground(new Color(202,150,104));
