@@ -89,16 +89,16 @@ public class CoffeeShop{
 	   ArrayList<Ingredients> ings;
 	   String text, ingText = "";
 	      
-	      switch(option){
-	         case 1:
-	            ings = user.getLikes();
-	            text = "likes";
-	            break;
+	   switch(option){
+	      case 1:
+	         ings = user.getLikes();
+	         text = "likes";
+	         break;
 	            
-	         case 2:
-	            ings = user.getDislikes();
-	            text = "dislikes";            
-	            break;
+	      case 2:
+	         ings = user.getDislikes();
+	         text = "dislikes";            
+	         break;
 	            
 	         default:
 	            ings = user.getRestrictions();
@@ -325,61 +325,61 @@ public class CoffeeShop{
 	      frame.setVisible(true);
 	   }
 
-	   public static void preferencesMenu(){
-	      JFrame.setDefaultLookAndFeelDecorated(true);
-	      JFrame frame = new JFrame("Preference Options");
-	      //frame.setLayout(new BorderLayout());
-	      frame.setPreferredSize(new Dimension(800,600));
-	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public static void preferencesMenu(){
+	   JFrame.setDefaultLookAndFeelDecorated(true);
+	   JFrame frame = new JFrame("Preference Options");
+	   //frame.setLayout(new BorderLayout());
+	   frame.setPreferredSize(new Dimension(800,600));
+	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	            
-	      JPanel panel = new JPanel();
-	      frame.add(panel);
+	   JPanel panel = new JPanel();
+	   frame.add(panel);
 
-	      JButton likesButton = new JButton("View Likes");
-	      JButton dislikesButton = new JButton("View Dislikes");
-		   JButton restrictionsButton = new JButton("View Restrictions");
-		   JButton backButton = new JButton("Back");
+	   JButton likesButton = new JButton("View Likes");
+	   JButton dislikesButton = new JButton("View Dislikes");
+		JButton restrictionsButton = new JButton("View Restrictions");
+		JButton backButton = new JButton("Back");
 	      
-	      likesButton.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-	            preferencesSubMenu(1);
-	            frame.setVisible(false); 
-	            frame.dispose();
-	         }
-	      });
+	   likesButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+	         preferencesSubMenu(1);
+	         frame.setVisible(false); 
+	         frame.dispose();
+	      }
+	   });
 	      
-	      dislikesButton.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-	            preferencesSubMenu(2);
-	            frame.setVisible(false); 
-	            frame.dispose();
-	         }
-	      });
+	   dislikesButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+	         preferencesSubMenu(2);
+	         frame.setVisible(false); 
+	         frame.dispose();
+	      }
+	   });
 	      
-	      restrictionsButton.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-	            preferencesSubMenu(3);
-	            frame.setVisible(false); 
-	            frame.dispose();
-	         }
-	      });
+	   restrictionsButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+	         preferencesSubMenu(3);
+	         frame.setVisible(false); 
+	         frame.dispose();
+	      }
+	   });
 	      
-	      backButton.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-	            frame.setVisible(false); 
-	            frame.dispose();
-	         }
-	      });
+	   backButton.addActionListener(new ActionListener() {
+	      public void actionPerformed(ActionEvent e) {
+	         frame.setVisible(false); 
+	         frame.dispose();
+	      }
+	   });
 	      
-	      panel.add(likesButton);
-	      panel.add(dislikesButton);
-	      panel.add(restrictionsButton);
-	      panel.add(backButton);
+	   panel.add(likesButton);
+	   panel.add(dislikesButton);
+	   panel.add(restrictionsButton);
+	   panel.add(backButton);
 
-	      frame.pack();
-	      frame.setLocationRelativeTo(null);         
-	      frame.setVisible(true); 
-	   }
+	   frame.pack();
+	   frame.setLocationRelativeTo(null);         
+	   frame.setVisible(true); 
+	}
 
    public static void login(){
       
