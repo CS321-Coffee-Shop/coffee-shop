@@ -84,6 +84,8 @@ public class CoffeeShop{
 	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   
 	   JPanel panel = new JPanel();
+      panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+      panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 	   frame.add(panel);
 	      
 	   ArrayList<Ingredients> ings;
@@ -100,68 +102,78 @@ public class CoffeeShop{
 	         text = "dislikes";            
 	         break;
 	            
-	         default:
-	            ings = user.getRestrictions();
-	            text = "restrictions";
-	      }
-	      
-	      JLabel lbl1 = new JLabel("Your current " + text + " are: ");
-	      panel.add(lbl1);
-	      
-	      for(int i = 0; i < ings.size(); i++){
-	         ingText += ings.get(i).getName();
-	         
-	         if(i < ings.size() - 1){
-	            ingText += ", ";
-	         }
-	         else{
-	            ingText += ".";
-	         }
-	      }
-	      
-	      if(ings.size() < 1){
-	         ingText = "None.";
-	      }
-	      
-	      JLabel lbl2 = new JLabel(ingText);
-	      panel.add(lbl2);
-	      
-	      JButton addButton = new JButton("Add");
-	      JButton removeButton = new JButton("Remove");
-		   JButton backButton = new JButton("Back");
-	      
-	      addButton.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-	            preferencesAddMenu(option);
-	            frame.setVisible(false); 
-	            frame.dispose();
-	         }
-	      });
-	      
-	      removeButton.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-	            preferencesRemoveMenu(option);
-	            frame.setVisible(false); 
-	            frame.dispose();
-	         }
-	      });
-	      
-	      backButton.addActionListener(new ActionListener() {
-			   public void actionPerformed(ActionEvent e) {
-	            preferencesMenu();
-	            frame.setVisible(false); 
-	            frame.dispose();
-	         }
-	      });
-	      
-	      panel.add(addButton);
-	      panel.add(removeButton);
-	      panel.add(backButton);
-	      
-	      frame.pack();
-	      frame.setLocationRelativeTo(null);         
-	      frame.setVisible(true);
+	      default:
+	         ings = user.getRestrictions();
+	         text = "restrictions";
 	   }
+	      
+      for(int i = 0; i < ings.size(); i++){
+	      ingText += ings.get(i).getName();
+	      
+	      if(i < ings.size() - 1){
+	         ingText += ", ";
+	      }
+	      else{
+	         ingText += ".";
+	      }
+	   }
+	      
+	   if(ings.size() < 1){
+	      ingText = "None.";
+	   }
+         
+	   JLabel lbl = new JLabel("Your current " + text + " are " + ingText);
+	   panel.add(lbl);
+         
+      JPanel buttonPane = new JPanel();
+      buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
+      buttonPane.setAlignmentX(Component.LEFT_ALIGNMENT);
+      //buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+	      
+      JButton addButton = new JButton("Add");
+	   JButton removeButton = new JButton("Remove");
+	   JButton backButton = new JButton("Back");
+	      
+	   addButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+	         preferencesAddMenu(option);
+	         frame.setVisible(false); 
+	         frame.dispose();
+	      }
+	   });
+	      
+	   removeButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+	         preferencesRemoveMenu(option);
+	         frame.setVisible(false); 
+	         frame.dispose();
+	      }
+	   });
+	      
+	   backButton.addActionListener(new ActionListener() {
+		   public void actionPerformed(ActionEvent e) {
+	         preferencesMenu();
+	         frame.setVisible(false); 
+	         frame.dispose();
+	      }
+	   });
+	      
+	   buttonPane.add(addButton);
+      
+      buttonPane.add(Box.createRigidArea(new Dimension(10,5)));
+
+	   buttonPane.add(removeButton);
+      
+      buttonPane.add(Box.createRigidArea(new Dimension(10,5)));
+      
+	   buttonPane.add(backButton);
+      
+      panel.add(buttonPane);
+	      
+	   frame.pack();
+	   frame.setLocationRelativeTo(null);         
+	   frame.setVisible(true);
+	}
 	   
 	   public static void preferencesRemove(int option, int itemIndex){      
 	      switch(option){
@@ -328,11 +340,12 @@ public class CoffeeShop{
 	public static void preferencesMenu(){
 	   JFrame.setDefaultLookAndFeelDecorated(true);
 	   JFrame frame = new JFrame("Preference Options");
-	   //frame.setLayout(new BorderLayout());
+	   
 	   frame.setPreferredSize(new Dimension(800,600));
 	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	            
 	   JPanel panel = new JPanel();
+      panel.setLayout(new BoxLayout(panel, BoxLayout.LINE_AXIS));
 	   frame.add(panel);
 
 	   JButton likesButton = new JButton("View Likes");
@@ -370,12 +383,23 @@ public class CoffeeShop{
 	         frame.dispose();
 	      }
 	   });
+      
+      panel.setBorder(BorderFactory.createEmptyBorder(0, 180, 0, 0));
 	      
 	   panel.add(likesButton);
+      
+      panel.add(Box.createRigidArea(new Dimension(10,5)));
+      
 	   panel.add(dislikesButton);
+      
+      panel.add(Box.createRigidArea(new Dimension(10,5)));
+      
 	   panel.add(restrictionsButton);
+      
+      panel.add(Box.createRigidArea(new Dimension(10,5)));
+      
 	   panel.add(backButton);
-
+      
 	   frame.pack();
 	   frame.setLocationRelativeTo(null);         
 	   frame.setVisible(true); 
