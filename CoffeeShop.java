@@ -81,11 +81,9 @@ public class CoffeeShop{
    public static void preferencesSubMenu(int option){
 	   JFrame frame = new JFrame("Preference Options");
 	   frame.setPreferredSize(new Dimension(800,600));
-	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
 	   
 	   JPanel panel = new JPanel();
-      panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-      panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 	   frame.add(panel);
 	      
 	   ArrayList<Ingredients> ings;
@@ -126,9 +124,6 @@ public class CoffeeShop{
 	   panel.add(lbl);
          
       JPanel buttonPane = new JPanel();
-      buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
-      buttonPane.setAlignmentX(Component.LEFT_ALIGNMENT);
-      //buttonPane.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
 	      
       JButton addButton = new JButton("Add");
 	   JButton removeButton = new JButton("Remove");
@@ -160,15 +155,20 @@ public class CoffeeShop{
 	      
 	   buttonPane.add(addButton);
       
-      buttonPane.add(Box.createRigidArea(new Dimension(10,5)));
+      buttonPane.add(Box.createRigidArea(new Dimension(10,0)));
 
 	   buttonPane.add(removeButton);
       
-      buttonPane.add(Box.createRigidArea(new Dimension(10,5)));
+      buttonPane.add(Box.createRigidArea(new Dimension(10,0)));
       
 	   buttonPane.add(backButton);
       
-      panel.add(buttonPane);
+      frame.add(buttonPane);
+      
+      frame.setLayout(new GridLayout(2,1));
+      
+      //Container contentPane = frame.getContentPane();
+      //contentPane.add(panel, BorderLayout.CENTER);
 	      
 	   frame.pack();
 	   frame.setLocationRelativeTo(null);         
