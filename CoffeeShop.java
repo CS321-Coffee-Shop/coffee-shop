@@ -44,6 +44,26 @@ public class CoffeeShop{
       
       randSize = (int)(Math.random() * ings.size());
       
+      if(ings.size() < 3){
+         ArrayList<Ingredients> neutrals = new ArrayList<Ingredients>();
+         
+         for(Ingredients i: ingredientsList){
+            if(!user.getLikes().contains(i) && !user.getDislikes().contains(i) && !user.getRestrictions().contains(i)){
+               neutrals.add(i);
+            }
+         }
+         
+         int j = 0;
+         
+         while(ings.size() < 3 && neutrals.size() > 0){
+            j = (int)(Math.random() * neutrals.size());
+            
+            ings.add(neutrals.get(j));
+            
+            neutrals.remove(j);
+         }
+      }
+      
       for(int i = 0; i < randSize; i++){
          randIndex = (int)(Math.random() * ings.size());
       
@@ -360,6 +380,8 @@ public class CoffeeShop{
 	      }
 	      
 	      JComboBox<String> cb = new JComboBox<String>();
+         cb.setForeground(new Color(125,83,40));
+         cb.setBackground(new Color(255, 255, 255)); //light brown 169,123,76
 	      
 	      for(int i = 0; i < ingredientsList.size(); i++){
 	         if(!chosenList.contains(ingredientsList.get(i))){
@@ -417,8 +439,8 @@ public class CoffeeShop{
             MenuItem[] items = getRecommendedItems();
             items = Arrays.copyOfRange(items, 0, Math.min(4, items.length));
 	         displayItems(items, "Custom Menu");
-	         frame.setVisible(false); 
-	         frame.dispose();
+	         //frame.setVisible(false); 
+	         //frame.dispose();
 	      }
 	   });
       
@@ -445,14 +467,7 @@ public class CoffeeShop{
 	         frame.dispose();
 	      }
 	   });
-	      
-	   backButton.addActionListener(new ActionListener() {
-	      public void actionPerformed(ActionEvent e) {
-	         frame.setVisible(false); 
-	         frame.dispose();
-	      }
-	   });
-            
+	                  
       JPanel buttonPane = new JPanel();
       buttonPane.setLayout(new GridLayout(2,2));
       buttonPane.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
@@ -874,6 +889,9 @@ public class CoffeeShop{
          panel.add(button);
       }
       
+      panel.setBackground(new Color(125,83,40));
+      panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+      
       return panel;
    }
    
@@ -1071,8 +1089,7 @@ public class CoffeeShop{
             new ActionListener(){
                @Override
                public void actionPerformed(ActionEvent e){
-                  MenuItem[] a = {getRandomItem()};
-                  displayItems(a, "Random Item");
+                  displayItemDetails(getRandomItem());
                }});
          
       cartButton.setBackground(new Color(255,255,255));
