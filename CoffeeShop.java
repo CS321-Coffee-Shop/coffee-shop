@@ -23,10 +23,60 @@ public class CoffeeShop{
    //Menu test attempt
    public static Menu menu = new Menu();
    
+   public static MenuItem getRandomItem(){
+      ArrayList<Ingredients> bases = new ArrayList<Ingredients>();
+      ArrayList<Ingredients> ings;
+      
+      String[] names;
+      
+      int randIndex, randSize;      
+      double price;
+      boolean hasBase = false;
+      
+      for(Ingredients i: ingredientsList){
+         if(i.getIsBase() && !user.getRestrictions().contains(i)){
+            bases.add(i);
+         }
+      }
+      
+      ings = new ArrayList<>(user.getLikes());
+      
+      randSize = (int)(Math.random() * ings.size());
+      
+      for(int i = 0; i < randSize; i++){
+         randIndex = (int)(Math.random() * ings.size());
+      
+         ings.remove(randIndex);
+      }
+      
+      for(Ingredients b: bases){      
+         if(ings.contains(b)){
+            hasBase = true;
+            break;
+         }             
+      }
+      
+      if(!hasBase){
+         randIndex = (int)(Math.random() * bases.size());
+         
+         ings.add(bases.get(randIndex));
+      }
+      
+      price = ings.size() * 0.5;
+      
+      names = new String[ings.size()];
+      
+      for(int i = 0; i < ings.size(); i++){
+         names[i] = ings.get(i).getName();
+      }
+      
+      return new MenuItem("Custom Item", price, names);
+   }
+   
    /*Gets a sorted array of MenuItems based on user preferences
    */
    public static MenuItem[] getRecommendedItems(){
-      MenuItem[] recommendations = new MenuItem[9];
+      MenuItem[] recommendations = new MenuItem[menu.size()];
       MenuItem temp, temp2 = null;
       
       for(int i = 0; i < menu.size(); i++){
@@ -668,7 +718,9 @@ public class CoffeeShop{
          
          for(String name: ingArray){
              if(i < 1){
-                ingredientsList.add(new Ingredients(name));
+                if(name.equals("water") || name.equals("whole milk")){
+                  ingredientsList.add(new Ingredients(name, true));
+                }
              }
              
              //add new Ingredients to ingredientsList
@@ -676,8 +728,13 @@ public class CoffeeShop{
                 if(name.equals(ingredientsList.get(j).getName())){
                    j = ingredientsList.size();
                 }
-                else if(j == ingredientsList.size() - 1){                
-                   ingredientsList.add(new Ingredients(name));
+                else if(j == ingredientsList.size() - 1){
+                  if(name.equals("water") || name.equals("whole milk")){
+                     ingredientsList.add(new Ingredients(name, true));
+                  }
+                  else{
+                     ingredientsList.add(new Ingredients(name));
+                  }
                 }
              }
           }
@@ -860,7 +917,7 @@ public class CoffeeShop{
             new ActionListener(){
                @Override
                public void actionPerformed(ActionEvent e){
-                  //random drink generator
+                  System.out.println(getRandomItem());
                }});
          
       cartButton.setBackground(new Color(255,255,255));
