@@ -176,16 +176,21 @@ public class CoffeeShop{
 	      ingText = "None.";
 	   }
          
-	   JLabel lbl = new JLabel("Your current " + text + " are " + ingText);
-	   panel.add(lbl);
+	   JLabel lbl = new JLabel("Your current " + text + " are " + ingText, SwingConstants.CENTER);
+      lbl.setForeground(new Color(125,83,40));
+      lbl.setBackground(new Color(255, 255, 255));
+      lbl.setOpaque(true);
+      
+      panel.setLayout(new BorderLayout());
+	   panel.add(lbl, BorderLayout.NORTH);
          
       JPanel buttonPane = new JPanel();
-	      
+	   buttonPane.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
       buttonPane.setBackground(new Color(125,83,40));
       
-      JButton addButton = makeStyledButton("Add");
-	   JButton removeButton = makeStyledButton("Remove");
-	   JButton backButton = makeStyledButton("Back");
+      JButton addButton = makeLightBrownButton("Add");
+	   JButton removeButton = makeLightBrownButton("Remove");
+	   JButton backButton = makeWhiteButton("Back");
 	      
 	   addButton.addActionListener(new ActionListener() {
 		   public void actionPerformed(ActionEvent e) {
@@ -212,18 +217,12 @@ public class CoffeeShop{
 	   });
 	      
 	   buttonPane.add(addButton);
-      
-      buttonPane.add(Box.createRigidArea(new Dimension(10,0)));
-
 	   buttonPane.add(removeButton);
       
-      buttonPane.add(Box.createRigidArea(new Dimension(10,0)));
+      buttonPane.setLayout(new GridLayout(1,2));
       
-	   buttonPane.add(backButton);
-      
-      frame.add(buttonPane);
-      
-      frame.setLayout(new GridLayout(2,1));
+      panel.add(buttonPane);
+      panel.add(backButton, BorderLayout.SOUTH);
 	      
 	   frame.pack();
 	   frame.setLocationRelativeTo(null);         
@@ -255,6 +254,7 @@ public class CoffeeShop{
          panel.setBackground(new Color(125,83,40));
 
 	      JLabel lbl = new JLabel("Select one of the ingredients and click Remove.");
+         lbl.setForeground(new Color(255, 255, 255));
 	      panel.add(lbl);
 	      
 	      String[] choices;
@@ -276,8 +276,8 @@ public class CoffeeShop{
 
 	      panel.add(cb);
 	      
-	      JButton removeButton = makeStyledButton("Remove");
-		   JButton backButton = makeStyledButton("Back");
+	      JButton removeButton = makeWhiteButton("Remove");
+		   JButton backButton = makeWhiteButton("Back");
 	      
 	      removeButton.addActionListener(new ActionListener() {
 			   public void actionPerformed(ActionEvent e) {
@@ -341,6 +341,7 @@ public class CoffeeShop{
          panel.setBackground(new Color(125,83,40));
 
 	      JLabel lbl = new JLabel("Select one of the ingredients and click Add.");
+         lbl.setForeground(new Color(255, 255, 255));
 	      panel.add(lbl);
 	      
 	      ArrayList<Ingredients> chosenList;
@@ -368,8 +369,8 @@ public class CoffeeShop{
 	      
 	      panel.add(cb);
 	      
-	      JButton addButton = makeStyledButton("Add");
-		   JButton backButton = makeStyledButton("Back");
+	      JButton addButton = makeWhiteButton("Add");
+		   JButton backButton = makeWhiteButton("Back");
 	      
 	      addButton.addActionListener(new ActionListener() {
 			   public void actionPerformed(ActionEvent e) {
@@ -404,12 +405,11 @@ public class CoffeeShop{
 	   JPanel panel = new JPanel();
       panel.setLayout(new BorderLayout());
 	   frame.add(panel);
-      //panel.setBackground(new Color(125,83,40));
 
-      JButton menuButton = makeStyledButton("View Custom Menu");
-	   JButton likesButton = makeStyledButton("View Likes");
-	   JButton dislikesButton = makeStyledButton("View Dislikes");
-		JButton restrictionsButton = makeStyledButton("View Restrictions");
+      JButton menuButton = makeLightBrownButton("View Custom Menu");
+	   JButton likesButton = makeLightBrownButton("View Likes");
+	   JButton dislikesButton = makeLightBrownButton("View Dislikes");
+		JButton restrictionsButton = makeLightBrownButton("View Restrictions");
 		JButton backButton = makeBackButton(frame);
 	      
       menuButton.addActionListener(new ActionListener() {
@@ -759,17 +759,40 @@ public class CoffeeShop{
       }      
    }
    
-   public static JButton makeStyledButton(String text){
+   public static JButton makeButton(String text){
       JButton button = new JButton(text);
+      button.setVerticalTextPosition(JButton.CENTER);
+      button.setHorizontalTextPosition(JButton.CENTER);
+      
+      return button;
+   }
+   
+   public static JButton makeLightBrownButton(String text){
+      JButton button = makeButton(text);
+      button.setBackground(new Color(169,123,76));
+      button.setForeground(new Color(255,255,255));
+            
+      return button;
+   }
+   
+   public static JButton makeDarkBrownButton(String text){
+      JButton button = makeButton(text);
+      button.setBackground(new Color(125,83,40));
+      button.setForeground(new Color(255,255,255));
+            
+      return button;
+   }
+   
+   public static JButton makeWhiteButton(String text){
+      JButton button = makeButton(text);
       button.setBackground(new Color(255,255,255));
       button.setForeground(new Color(121,76,36));
-      button.setVerticalTextPosition(JButton.CENTER);
-      button.setHorizontalTextPosition(JButton.CENTER);      
+            
       return button;
    }
    
    public static JButton makeCartButton(MenuItem item){
-      JButton cartButton = makeStyledButton("Add to Cart");
+      JButton cartButton = makeWhiteButton("Add to Cart");
       cartButton.addActionListener(
          new ActionListener(){
             @Override
@@ -782,7 +805,7 @@ public class CoffeeShop{
    }
    
    public static JButton makeBackButton(JFrame frame){
-      JButton backButton = makeStyledButton("Back");
+      JButton backButton = makeWhiteButton("Back");
       backButton.addActionListener(
          new ActionListener(){
             @Override
