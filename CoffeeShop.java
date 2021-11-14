@@ -743,6 +743,125 @@ public class CoffeeShop{
       }      
    }
    
+   public static JButton makeStyledButton(String text){
+      JButton button = new JButton(text);
+      button.setBackground(new Color(255,255,255));
+      button.setForeground(new Color(121,76,36));
+      button.setVerticalTextPosition(JButton.CENTER);
+      button.setHorizontalTextPosition(JButton.CENTER);      
+      return button;
+   }
+   
+   public static JButton makeCartButton(MenuItem item){
+      JButton cartButton = makeStyledButton("Add to Cart");
+      cartButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               //add to cart
+               cartList.add(item);
+      }});
+      
+      return cartButton;
+   }
+   
+   public static JButton makeBackButton(){
+      JButton backButton = makeStyledButton("Back");
+      backButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               //go back
+               
+      }});
+      
+      return backButton;
+   }
+   
+   public static JFrame makeItemFrame(MenuItem item){
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame detailFrame = new JFrame(item.getName()); // Used to say "Menu"
+      detailFrame.setLayout(new BorderLayout());
+      detailFrame.setPreferredSize(new Dimension(600,400));
+      detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      detailFrame.getContentPane().setBackground(new Color(125,83,40));
+                  
+      String temp = "<html>Ingredients List:<br/><br/>";
+      for(int j=0;j<item.getItemIngredients().length;j++){
+         temp += item.getItemIngredients()[j]+"<br/>";
+      }
+      temp += "</html>";
+      JLabel info = new JLabel(temp);
+      info.setForeground(new Color(255,255,255));
+      detailFrame.getContentPane().add(info);
+   
+      return detailFrame;
+   }
+   
+   public static void displayItemDetails(MenuItem item){
+      JFrame detailFrame = makeItemFrame(item);
+      JButton cartButton = makeCartButton(item);
+               
+      detailFrame.add(cartButton, BorderLayout.SOUTH);   
+      detailFrame.pack();
+      detailFrame.setLocationRelativeTo(null);         
+      detailFrame.setVisible(true);
+   }
+   
+   public static JButton makeItemButton(MenuItem item){
+      JButton button = new JButton(item.getName());
+      button.setBackground(new Color(169,123,76));
+      button.setForeground(Color.WHITE);
+      button.setVerticalTextPosition(JButton.CENTER);
+      button.setHorizontalTextPosition(JButton.CENTER);
+      button.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               displayItemDetails(item);
+            }
+         });
+      
+      return button;
+   } 
+   
+   public static JPanel makeItemsPanel(MenuItem[] items){
+      JPanel panel = new JPanel();
+      panel.setLayout(new GridLayout((int)Math.sqrt(items.length),(int)Math.sqrt(items.length)));
+      
+      for(MenuItem i: items){
+         JButton button = makeItemButton(i);
+         
+         panel.add(button);
+      }
+      
+      return panel;
+   }
+   
+   public static void displayItems(MenuItem[] items, String pageName){   
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame frame = new JFrame(pageName);
+      frame.setLayout(new BorderLayout());
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      
+      JButton back = makeStyledButton("Back");
+      back.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               frame.setVisible(false); 
+	            frame.dispose();
+            }
+         });
+      
+      frame.add(makeItemsPanel(items), BorderLayout.CENTER);
+      frame.add(back, BorderLayout.SOUTH);
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true);
+   }
+   
    /*
    Menu items will be displayed as clickable buttons with item name and price
    When buttons are clicked, open a page with ingredient information and details of the item
@@ -765,7 +884,8 @@ public class CoffeeShop{
       for(int i=0;i<menu.size();i++){
       
          MenuItem tempItem = menu.getItem(i);
-        
+         
+         //button = makeItemButton(tempItem); Item button function for easy reuse
          button = new JButton(tempItem.getName());
          button.setBackground(new Color(169,123,76));
          button.setForeground(Color.WHITE);
@@ -776,6 +896,7 @@ public class CoffeeShop{
                @Override
                public void actionPerformed(ActionEvent e){
                //view menu item details
+               //JFrame detailFrame = makeItemFrame(tempItem); Item detail function for easy reuse
                   JFrame.setDefaultLookAndFeelDecorated(true);
                   JFrame detailFrame = new JFrame(tempItem.getName()); // Used to say "Menu"
                   detailFrame.setLayout(new BorderLayout());
@@ -791,6 +912,8 @@ public class CoffeeShop{
                   JLabel info = new JLabel(temp);
                   info.setForeground(new Color(255,255,255));
                   detailFrame.getContentPane().add(info);
+                  
+                  //JButton cartButton = makeCartButton(tempItem); Cart button function for easy reuse
                   
                   JButton cartButton = new JButton("Add to Cart");
                   cartButton.setBackground(new Color(255,255,255));
@@ -917,7 +1040,8 @@ public class CoffeeShop{
             new ActionListener(){
                @Override
                public void actionPerformed(ActionEvent e){
-                  System.out.println(getRandomItem());
+                  MenuItem[] a = {getRandomItem()};
+                  displayItems(a, "Random Item");
                }});
          
       cartButton.setBackground(new Color(255,255,255));
