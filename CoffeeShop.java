@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Queue;
 import java.util.Scanner;
 import java.io.*;
@@ -15,7 +16,7 @@ public class CoffeeShop{
    public static ArrayList<Employee> employeeList = new ArrayList<Employee>();
    public static ArrayList<Customer> customerList = new ArrayList<Customer>();
    public static ArrayList<MenuItem> cartList = new ArrayList<MenuItem>();
-   public static ArrayList<MenuItem> orderQueue = new ArrayList<MenuItem>();
+   public static ArrayList<Order> orderQueue = new ArrayList<Order>();
    
    protected static Customer user = new Customer();
    protected static Employee userE = new Employee();
@@ -23,10 +24,80 @@ public class CoffeeShop{
    //Menu test attempt
    public static Menu menu = new Menu();
    
+   public static MenuItem getRandomItem(){
+      ArrayList<Ingredients> bases = new ArrayList<Ingredients>();
+      ArrayList<Ingredients> ings;
+      
+      String[] names;
+      
+      int randIndex, randSize;      
+      double price;
+      boolean hasBase = false;
+      
+      for(Ingredients i: ingredientsList){
+         if(i.getIsBase() && !user.getRestrictions().contains(i)){
+            bases.add(i);
+         }
+      }
+      
+      ings = new ArrayList<>(user.getLikes());
+      
+      randSize = (int)(Math.random() * ings.size());
+      
+      if(ings.size() < 3){
+         ArrayList<Ingredients> neutrals = new ArrayList<Ingredients>();
+         
+         for(Ingredients i: ingredientsList){
+            if(!user.getLikes().contains(i) && !user.getDislikes().contains(i) && !user.getRestrictions().contains(i)){
+               neutrals.add(i);
+            }
+         }
+         
+         int j = 0;
+         
+         while(ings.size() < 3 && neutrals.size() > 0){
+            j = (int)(Math.random() * neutrals.size());
+            
+            ings.add(neutrals.get(j));
+            
+            neutrals.remove(j);
+         }
+      }
+      
+      for(int i = 0; i < randSize; i++){
+         randIndex = (int)(Math.random() * ings.size());
+      
+         ings.remove(randIndex);
+      }
+      
+      for(Ingredients b: bases){      
+         if(ings.contains(b)){
+            hasBase = true;
+            break;
+         }             
+      }
+      
+      if(!hasBase){
+         randIndex = (int)(Math.random() * bases.size());
+         
+         ings.add(bases.get(randIndex));
+      }
+      
+      price = ings.size() * 0.5;
+      
+      names = new String[ings.size()];
+      
+      for(int i = 0; i < ings.size(); i++){
+         names[i] = ings.get(i).getName();
+      }
+      
+      return new MenuItem("Custom Item", price, names);
+   }
+   
    /*Gets a sorted array of MenuItems based on user preferences
    */
    public static MenuItem[] getRecommendedItems(){
-      MenuItem[] recommendations = new MenuItem[9];
+      MenuItem[] recommendations = new MenuItem[menu.size()]; 
       MenuItem temp, temp2 = null;
       
       for(int i = 0; i < menu.size(); i++){
@@ -62,6 +133,10 @@ public class CoffeeShop{
          }
          
          for(int z = 0; z < i + 1; z++){
+            if(z >= recommendations.length){
+               break;
+            }
+            
             if(recommendations[z] != null){
                if(recommendations[z].getScore() < temp.getScore()){
                   temp2 = recommendations[z];
@@ -77,6 +152,352 @@ public class CoffeeShop{
       
       return recommendations;
    }
+
+   public static void preferencesSubMenu(int option){
+      JFrame frame = new JFrame("Preference Options");
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+      
+      JPanel panel = new JPanel();
+      frame.add(panel);
+      panel.setBackground(new Color(125,83,40));
+         
+      ArrayList<Ingredients> ings;
+      String text, ingText = "";
+         
+      switch(option){
+         case 1:
+            ings = user.getLikes();
+            text = "likes";
+            break;
+               
+         case 2:
+            ings = user.getDislikes();
+            text = "dislikes";            
+            break;
+               
+         default:
+            ings = user.getRestrictions();
+            text = "restrictions";
+      }
+         
+      for(int i = 0; i < ings.size(); i++){
+         ingText += ings.get(i).getName();
+         
+         if(i < ings.size() - 1){
+            ingText += ", ";
+         }
+         else{
+            ingText += ".";
+         }
+      }
+         
+      if(ings.size() < 1){
+         ingText = "None.";
+      }
+         
+      JLabel lbl = new JLabel("Your current " + text + " are " + ingText, SwingConstants.CENTER);
+      lbl.setForeground(new Color(125,83,40));
+      lbl.setBackground(new Color(255, 255, 255));
+      lbl.setOpaque(true);
+      
+      panel.setLayout(new BorderLayout());
+      panel.add(lbl, BorderLayout.NORTH);
+         
+      JPanel buttonPane = new JPanel();
+      buttonPane.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+      buttonPane.setBackground(new Color(125,83,40));
+      
+      JButton addButton = makeLightBrownButton("Add");
+      JButton removeButton = makeLightBrownButton("Remove");
+      JButton backButton = makeWhiteButton("Back");
+         
+      addButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesAddMenu(option);
+               frame.setVisible(false); 
+               frame.dispose();
+            }
+         });
+         
+      removeButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesRemoveMenu(option);
+               frame.setVisible(false); 
+               frame.dispose();
+            }
+         });
+         
+      backButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesMenu();
+               frame.setVisible(false); 
+               frame.dispose();
+            }
+         });
+         
+      buttonPane.add(addButton);
+      buttonPane.add(removeButton);
+      
+      buttonPane.setLayout(new GridLayout(1,2));
+      
+      panel.add(buttonPane);
+      panel.add(backButton, BorderLayout.SOUTH);
+         
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true);
+   }
+	   
+   public static void preferencesRemove(int option, int itemIndex){      
+      switch(option){
+         case 1:
+            user.removeLike(itemIndex);
+            break;
+               
+         case 2:
+            user.removeDislike(itemIndex);
+            break;
+               
+         default:
+            user.removeRestriction(itemIndex);
+      }
+   }
+	   
+   public static void preferencesRemoveMenu(int option){
+      JFrame frame = new JFrame("Preference Options");
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      
+      JPanel panel = new JPanel();
+      frame.add(panel);
+      panel.setBackground(new Color(125,83,40));
+   
+      JLabel lbl = new JLabel("Select one of the ingredients and click Remove.");
+      lbl.setForeground(new Color(255, 255, 255));
+      panel.add(lbl);
+         
+      String[] choices;
+   
+      switch(option){
+         case 1:
+            choices = user.getLikesNames();
+            break;
+               
+         case 2:
+            choices = user.getDislikesNames();
+            break;
+               
+         default:
+            choices = user.getRestrictionsNames();
+      }
+         
+      JComboBox<String> cb = new JComboBox<String>(choices);
+   
+      panel.add(cb);
+         
+      JButton removeButton = makeWhiteButton("Remove");
+      JButton backButton = makeWhiteButton("Back");
+         
+      removeButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesRemove(option, cb.getSelectedIndex());
+               cb.removeItemAt(cb.getSelectedIndex());
+            }
+         });
+         
+      backButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesSubMenu(option);
+               frame.setVisible(false); 
+               frame.dispose();
+            }
+         });
+         
+      panel.add(removeButton);
+      panel.add(backButton);
+         
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true);
+   }
+	   
+   public static void preferencesAdd(int option, String name){      
+      Ingredients ing = new Ingredients(name);
+         
+      for(Ingredients i: ingredientsList){
+         if(ing.getName().equals(i.getName())){
+            ing = i;
+         }
+      }
+         
+      switch(option){
+         case 1:
+            user.removeDislike(ing.getName());
+            user.removeRestriction(ing.getName());
+            user.addLike(ing);
+            break;
+               
+         case 2:
+            user.removeLike(ing.getName());
+            user.removeRestriction(ing.getName());
+            user.addDislike(ing);
+            break;
+               
+         default:
+            user.removeLike(ing.getName());
+            user.removeDislike(ing.getName());
+            user.addRestriction(ing);
+      }
+   }
+	   
+   public static void preferencesAddMenu(int option){
+      JFrame frame = new JFrame("Preference Options");
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      
+      JPanel panel = new JPanel();
+      frame.add(panel);
+      panel.setBackground(new Color(125,83,40));
+   
+      JLabel lbl = new JLabel("Select one of the ingredients and click Add.");
+      lbl.setForeground(new Color(255, 255, 255));
+      panel.add(lbl);
+         
+      ArrayList<Ingredients> chosenList;
+         
+      switch(option){
+         case 1:
+            chosenList = user.getLikes();
+            break;
+               
+         case 2:
+            chosenList = user.getDislikes();
+            break;
+               
+         default:
+            chosenList = user.getRestrictions();
+      }
+         
+      JComboBox<String> cb = new JComboBox<String>();
+      cb.setForeground(new Color(125,83,40));
+      cb.setBackground(new Color(255, 255, 255)); //light brown 169,123,76
+         
+      for(int i = 0; i < ingredientsList.size(); i++){
+         if(!chosenList.contains(ingredientsList.get(i))){
+            cb.addItem(ingredientsList.get(i).getName());
+         }
+      }
+         
+      panel.add(cb);
+         
+      JButton addButton = makeWhiteButton("Add");
+      JButton backButton = makeWhiteButton("Back");
+         
+      addButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesAdd(option, String.valueOf(cb.getSelectedItem()));
+               cb.removeItemAt(cb.getSelectedIndex());
+            }
+         });
+         
+      backButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesSubMenu(option);
+               frame.setVisible(false); 
+               frame.dispose();
+            }
+         });
+         
+      panel.add(addButton);
+      panel.add(backButton);
+         
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true);
+   }
+
+   public static void preferencesMenu(){
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame frame = new JFrame("Preference Options");
+      
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+               
+      JPanel panel = new JPanel();
+      panel.setLayout(new BorderLayout());
+      frame.add(panel);
+   
+      JButton menuButton = makeLightBrownButton("View Custom Menu");
+      JButton likesButton = makeLightBrownButton("View Likes");
+      JButton dislikesButton = makeLightBrownButton("View Dislikes");
+      JButton restrictionsButton = makeLightBrownButton("View Restrictions");
+      JButton backButton = makeBackButton(frame);
+         
+      menuButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               MenuItem[] items = getRecommendedItems();
+               items = Arrays.copyOfRange(items, 0, Math.min(4, items.length));
+               displayItems(items, "Custom Menu");
+            //frame.setVisible(false); 
+            //frame.dispose();
+            }
+         });
+      
+      likesButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesSubMenu(1);
+               frame.setVisible(false); 
+               frame.dispose();
+            }
+         });
+         
+      dislikesButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesSubMenu(2);
+               frame.setVisible(false); 
+               frame.dispose();
+            }
+         });
+         
+      restrictionsButton.addActionListener(
+         new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               preferencesSubMenu(3);
+               frame.setVisible(false); 
+               frame.dispose();
+            }
+         });
+                     
+      JPanel buttonPane = new JPanel();
+      buttonPane.setLayout(new GridLayout(2,2));
+      buttonPane.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+      buttonPane.setBackground(new Color(125,83,40));
+         
+      buttonPane.add(menuButton);
+      buttonPane.add(likesButton);      
+      buttonPane.add(dislikesButton);      
+      buttonPane.add(restrictionsButton);
+            
+      panel.add(buttonPane);
+      panel.add(backButton, BorderLayout.SOUTH);
+      
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true); 
+   }
+
+//LOGIN__________________________________________________________________________________________________________________________________________________
 
    public static void login(){
       
@@ -249,7 +670,7 @@ public class CoffeeShop{
                   if(customerList.get(i).email.equals(email) && customerList.get(i).password.equals(password)) {
                      user = customerList.get(i);
                      System.out.println("reached");
-                     displayMenu();
+                     displayCustomerMenu();
                      break;
                   }
                }
@@ -266,14 +687,13 @@ public class CoffeeShop{
                for(int i = 0; i<employeeList.size(); i++) {
                   if(employeeList.get(i).password == p) {
                      userE = employeeList.get(i);
-                     displayMenu();
+                     displayEmployeeMenu();
                      break;
                   }
                }
             }
          });
    
-      
       /*
       panel.add(username);
       panel.add(password);
@@ -299,6 +719,8 @@ public class CoffeeShop{
       frame.setVisible(true); 
    
    }
+   
+//DISPLAY MENU FUNCTIONALITIES_______________________________________________________________________________________________________________________________________________________
    
    /*
    Menu items will be read in from a text file dividing information by "|"
@@ -336,11 +758,171 @@ public class CoffeeShop{
          tempArray = itemInfo.get(i).split("\\|");
          itemName = tempArray[0].substring(0,tempArray[0].length());
          price = Double.parseDouble(tempArray[1]);
-         tempIngred = tempArray[2].substring(1,tempArray[2].length()-1);
+         tempIngred = tempArray[2].substring(1,tempArray[2].length()-2);
          ingArray = tempIngred.split(",");
+         
+         for(String name: ingArray){
+            if(i < 1){
+               if(name.equals("water") || name.equals("whole milk")){
+                  ingredientsList.add(new Ingredients(name, true));
+               }
+            }
+             
+             //add new Ingredients to ingredientsList
+            for(int j = 0; j < ingredientsList.size(); j++){
+               if(name.equals(ingredientsList.get(j).getName())){
+                  j = ingredientsList.size();
+               }
+               else if(j == ingredientsList.size() - 1){
+                  if(name.equals("water") || name.equals("whole milk")){
+                     ingredientsList.add(new Ingredients(name, true));
+                  }
+                  else{
+                     ingredientsList.add(new Ingredients(name));
+                  }
+               }
+            }
+         }
          
          menu.addItem(itemName,price,ingArray);
       }      
+   }
+   
+   public static JButton makeButton(String text){
+      JButton button = new JButton(text);
+      button.setVerticalTextPosition(JButton.CENTER);
+      button.setHorizontalTextPosition(JButton.CENTER);
+      
+      return button;
+   }
+   
+   public static JButton makeLightBrownButton(String text){
+      JButton button = makeButton(text);
+      button.setBackground(new Color(169,123,76));
+      button.setForeground(new Color(255,255,255));
+            
+      return button;
+   }
+   
+   public static JButton makeDarkBrownButton(String text){
+      JButton button = makeButton(text);
+      button.setBackground(new Color(125,83,40));
+      button.setForeground(new Color(255,255,255));
+            
+      return button;
+   }
+   
+   public static JButton makeWhiteButton(String text){
+      JButton button = makeButton(text);
+      button.setBackground(new Color(255,255,255));
+      button.setForeground(new Color(121,76,36));
+            
+      return button;
+   }
+   
+   public static JButton makeCartButton(MenuItem item){
+      JButton cartButton = makeWhiteButton("Add to Cart");
+      cartButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               //add to cart
+               cartList.add(item);
+            }});
+      
+      return cartButton;
+   }
+   
+   public static JButton makeBackButton(JFrame frame){
+      JButton backButton = makeWhiteButton("Back");
+      backButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               frame.setVisible(false); 
+               frame.dispose();
+            }});
+      
+      return backButton;
+   }
+   
+   public static JFrame makeItemFrame(MenuItem item){
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame detailFrame = new JFrame(item.getName()); // Used to say "Menu"
+      detailFrame.setLayout(new BorderLayout());
+      detailFrame.setPreferredSize(new Dimension(600,400));
+      detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      detailFrame.getContentPane().setBackground(new Color(125,83,40));
+                  
+      String temp = "<html>Ingredients List:<br/><br/>";
+      for(int j=0;j<item.getItemIngredients().length;j++){
+         temp += item.getItemIngredients()[j]+"<br/>";
+      }
+      temp += "</html>";
+      JLabel info = new JLabel(temp);
+      info.setForeground(new Color(255,255,255));
+      detailFrame.getContentPane().add(info);
+   
+      return detailFrame;
+   }
+   
+   public static void displayItemDetails(MenuItem item){
+      JFrame detailFrame = makeItemFrame(item);
+      JButton cartButton = makeCartButton(item);
+               
+      detailFrame.add(cartButton, BorderLayout.SOUTH);   
+      detailFrame.pack();
+      detailFrame.setLocationRelativeTo(null);         
+      detailFrame.setVisible(true);
+   }
+   
+   public static JButton makeItemButton(MenuItem item){
+      JButton button = new JButton(item.getName());
+      button.setBackground(new Color(169,123,76));
+      button.setForeground(Color.WHITE);
+      button.setVerticalTextPosition(JButton.CENTER);
+      button.setHorizontalTextPosition(JButton.CENTER);
+      button.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+               displayItemDetails(item);
+            }
+         });
+      
+      return button;
+   } 
+   
+   public static JPanel makeItemsPanel(MenuItem[] items){
+      JPanel panel = new JPanel();
+      panel.setLayout(new GridLayout((int)Math.sqrt(items.length),(int)Math.sqrt(items.length)));
+      
+      for(MenuItem i: items){
+         JButton button = makeItemButton(i);
+         
+         panel.add(button);
+      }
+      
+      panel.setBackground(new Color(125,83,40));
+      panel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+      
+      return panel;
+   }
+   
+   public static void displayItems(MenuItem[] items, String pageName){   
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame frame = new JFrame(pageName);
+      frame.setLayout(new BorderLayout());
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      
+      JButton back = makeBackButton(frame);
+      
+      frame.add(makeItemsPanel(items), BorderLayout.CENTER);
+      frame.add(back, BorderLayout.SOUTH);
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true);
    }
    
    /*
@@ -357,7 +939,6 @@ public class CoffeeShop{
             
       //Menu should be able to resize itself and add more pages if over specified limit
       JPanel panel = new JPanel();
-      //panel.setLayout(new GridLayout((int)Math.sqrt(menuItemList.size())+1,(int)Math.sqrt(menuItemList.size())));
       panel.setLayout(new GridLayout((int)Math.sqrt(menu.size())+1,(int)Math.sqrt(menu.size())));
       JButton button;
       
@@ -377,7 +958,7 @@ public class CoffeeShop{
                public void actionPerformed(ActionEvent e){
                //view menu item details
                   JFrame.setDefaultLookAndFeelDecorated(true);
-                  JFrame detailFrame = new JFrame(tempItem.getName()); // Used to say "Menu"
+                  JFrame detailFrame = new JFrame(tempItem.getName());
                   detailFrame.setLayout(new BorderLayout());
                   detailFrame.setPreferredSize(new Dimension(600,400));
                   detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -403,6 +984,7 @@ public class CoffeeShop{
                         public void actionPerformed(ActionEvent e){
                         //add to cart
                            cartList.add(tempItem);
+                           detailFrame.dispose();
                         }});      
                
                   detailFrame.add(cartButton, BorderLayout.SOUTH);   
@@ -423,45 +1005,62 @@ public class CoffeeShop{
             @Override
             public void actionPerformed(ActionEvent e){
                //view cart
-                  JFrame.setDefaultLookAndFeelDecorated(true);
-                  JFrame detailFrame = new JFrame("Your Cart");
-                  detailFrame.setLayout(new BorderLayout());
-                  detailFrame.setPreferredSize(new Dimension(600,400));
-                  detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                  detailFrame.getContentPane().setBackground(new Color(125,83,40));
+               JFrame.setDefaultLookAndFeelDecorated(true);
+               JFrame detailFrame = new JFrame("Your Cart");
+               detailFrame.setLayout(new BorderLayout());
+               detailFrame.setPreferredSize(new Dimension(600,400));
+               detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+               detailFrame.getContentPane().setBackground(new Color(125,83,40));
                   
-                  double priceTotal = 0.0;
-                  String temp = "<html>Your Cart:<br/><br/>";
-                  for(int j=0;j<cartList.size();j++){
-                     priceTotal += cartList.get(j).getPrice();
-                     temp += cartList.get(j).getName()+"\t"+cartList.get(j).getPrice()+"<br/><br/>";
-                  }
-                  temp += "<br/>Total: "+ priceTotal +"</html>";
-                  JLabel info = new JLabel(temp);
-                  info.setForeground(new Color(255,255,255));
-                  detailFrame.getContentPane().add(info);
+               double priceTotal = 0.0;
+               String temp = "<html>Your Cart:<br/><br/>";
+               for(int j=0;j<cartList.size();j++){
+                  priceTotal += cartList.get(j).getPrice();
+                  temp += cartList.get(j).getName()+"\t"+cartList.get(j).getPrice()+"<br/><br/>";
+               }
+               temp += "<br/>Total: "+ priceTotal +"</html>";
+               JLabel info = new JLabel(temp);
+               info.setForeground(new Color(255,255,255));
+               detailFrame.getContentPane().add(info);
                   
-                  JButton checkOutButton = new JButton("Check Out");
-                  checkOutButton.setBackground(new Color(255,255,255));
-                  checkOutButton.setForeground(new Color(121,76,36));
-                  checkOutButton.setVerticalTextPosition(JButton.CENTER);
-                  checkOutButton.setHorizontalTextPosition(JButton.CENTER);
+               JButton checkOutButton = new JButton("Check Out");
+               checkOutButton.setBackground(new Color(255,255,255));
+               checkOutButton.setForeground(new Color(121,76,36));
+               checkOutButton.setVerticalTextPosition(JButton.CENTER);
+               checkOutButton.setHorizontalTextPosition(JButton.CENTER);
+               checkOutButton.addActionListener(
+                  new ActionListener(){
+                     @Override
+                     public void actionPerformed(ActionEvent e){
+                     //send order to queue
+                        orderQueue.add(new Order());
+                        detailFrame.dispose();
+                     }
+                  });
                   
-                  JButton editButton = new JButton("Edit Cart");
-                  editButton.setBackground(new Color(255,255,255));
-                  editButton.setForeground(new Color(121,76,36));
-                  editButton.setVerticalTextPosition(JButton.CENTER);
-                  editButton.setHorizontalTextPosition(JButton.CENTER);
+               JButton editButton = new JButton("Edit Cart");
+               editButton.setBackground(new Color(255,255,255));
+               editButton.setForeground(new Color(121,76,36));
+               editButton.setVerticalTextPosition(JButton.CENTER);
+               editButton.setHorizontalTextPosition(JButton.CENTER);
+               editButton.addActionListener(
+                  new ActionListener(){
+                     @Override
+                     public void actionPerformed(ActionEvent e){
+                     //edit cart
+                     
+                     }
+                  });
                   
-                  JPanel bottomPanel = new JPanel();
-                  bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+               JPanel bottomPanel = new JPanel();
+               bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
                   
-                  bottomPanel.add(editButton);
-                  bottomPanel.add(checkOutButton);   
-                  detailFrame.add(bottomPanel, BorderLayout.SOUTH);
-                  detailFrame.pack();
-                  detailFrame.setLocationRelativeTo(null);         
-                  detailFrame.setVisible(true);
+               bottomPanel.add(editButton);
+               bottomPanel.add(checkOutButton);   
+               detailFrame.add(bottomPanel, BorderLayout.SOUTH);
+               detailFrame.pack();
+               detailFrame.setLocationRelativeTo(null);         
+               detailFrame.setVisible(true);
             }});      
       
       frame.add(cartButton, BorderLayout.SOUTH);
@@ -471,7 +1070,7 @@ public class CoffeeShop{
       frame.setVisible(true);
    }
    
-   public static void displayMenu() {
+   public static void displayCustomerMenu() {
     //set up overall frame
       JFrame.setDefaultLookAndFeelDecorated(true);
       JFrame frame = new JFrame("Coffee Shop");
@@ -506,7 +1105,7 @@ public class CoffeeShop{
             new ActionListener(){
                @Override
                public void actionPerformed(ActionEvent e){
-                  //preferences
+                  preferencesMenu();
                }});
          
       randomButton.setBackground(new Color(202,150,104));
@@ -529,107 +1128,191 @@ public class CoffeeShop{
                @Override
                public void actionPerformed(ActionEvent e){
                   //view cart
-                  
-                  
+                  viewCart();
                }});
          
-         //add buttons and panels to frame
-      panel.add(menuButton, BorderLayout.CENTER);
-      panel.add(preferButton, BorderLayout.EAST);
-      panel.add(randomButton, BorderLayout.WEST);
-      panel.add(cartButton, BorderLayout.SOUTH);
-      frame.getContentPane().add(panel);
-         
-      frame.pack();
-      frame.setLocationRelativeTo(null);         
-      frame.setVisible(true); 
-   }
-   
-   public static void main(String[] args) throws IOException{
-      
-      login();
-      
-      readInMenu();
-      /*
-      //set up overall frame
-      JFrame.setDefaultLookAndFeelDecorated(true);
-      JFrame frame = new JFrame("Coffee Shop");
-      frame.setLayout(new GridLayout(1,1));
-      frame.setPreferredSize(new Dimension(800,600));
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      
-      JPanel panel = new JPanel();
-      panel.setLayout(new BorderLayout());
-      
-      JButton menuButton = new JButton("Menu", new ImageIcon("coffeeImage.jfif"));
-      JButton preferButton = new JButton("Input Your Preferences");
-      JButton randomButton = new JButton("Randomized Drink");
-      JButton cartButton = new JButton("View Cart");
-      
-      menuButton.setBackground(new Color(137,84,38));
-      menuButton.setForeground(new Color(255,255,255));
-      menuButton.setVerticalTextPosition(JButton.CENTER);
-      menuButton.setHorizontalTextPosition(JButton.CENTER);
-      menuButton.addActionListener(
-         new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-               openMenu();
-            }});
-      
-      preferButton.setBackground(new Color(98,57,22));
-      preferButton.setForeground(new Color(255,255,255));
-      preferButton.setVerticalTextPosition(JButton.CENTER);
-      preferButton.setHorizontalTextPosition(JButton.CENTER);
-      preferButton.addActionListener(
-         new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-               //preferences
-            }});
-      
-      randomButton.setBackground(new Color(202,150,104));
-      randomButton.setForeground(new Color(255,255,255));
-      randomButton.setVerticalTextPosition(JButton.CENTER);
-      randomButton.setHorizontalTextPosition(JButton.CENTER);
-      randomButton.addActionListener(
-         new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-               //random drink generator
-            }});
-      
-      cartButton.setBackground(new Color(255,255,255));
-      cartButton.setForeground(new Color(121,76,36));
-      cartButton.setVerticalTextPosition(JButton.CENTER);
-      cartButton.setHorizontalTextPosition(JButton.CENTER);
-      cartButton.addActionListener(
-         new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e){
-               //view cart
-            }});
-      
       //add buttons and panels to frame
       panel.add(menuButton, BorderLayout.CENTER);
       panel.add(preferButton, BorderLayout.EAST);
       panel.add(randomButton, BorderLayout.WEST);
       panel.add(cartButton, BorderLayout.SOUTH);
       frame.getContentPane().add(panel);
-      
       frame.pack();
       frame.setLocationRelativeTo(null);         
-      frame.setVisible(true); */
+      frame.setVisible(true); 
+   }
+   
+   public static void displayEmployeeMenu() {
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame frame = new JFrame("Coffee Shop");
+      frame.setLayout(new GridLayout(1,1));
+      frame.setPreferredSize(new Dimension(800,600));
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         
+      JPanel panel = new JPanel();
+      panel.setLayout(new BorderLayout());
+         
+      JButton menuButton = new JButton("Menu", new ImageIcon("coffeeImage.jfif"));
+      JButton preferButton = new JButton("Input Your Preferences");
+      JButton randomButton = new JButton("Randomized Drink");
+      JButton kitchenButton = new JButton("View Orders");
+         
+      menuButton.setBackground(new Color(137,84,38));
+      menuButton.setForeground(new Color(255,255,255));
+      menuButton.setVerticalTextPosition(JButton.CENTER);
+      menuButton.setHorizontalTextPosition(JButton.CENTER);
+      menuButton.addActionListener(
+            new ActionListener(){
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  openMenu();
+               }});
+         
+      preferButton.setBackground(new Color(98,57,22));
+      preferButton.setForeground(new Color(255,255,255));
+      preferButton.setVerticalTextPosition(JButton.CENTER);
+      preferButton.setHorizontalTextPosition(JButton.CENTER);
+      preferButton.addActionListener(
+            new ActionListener(){
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  preferencesMenu();
+               }});
+         
+      randomButton.setBackground(new Color(202,150,104));
+      randomButton.setForeground(new Color(255,255,255));
+      randomButton.setVerticalTextPosition(JButton.CENTER);
+      randomButton.setHorizontalTextPosition(JButton.CENTER);
+      randomButton.addActionListener(
+            new ActionListener(){
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  //random drink generator
+               }});
+         
+      kitchenButton.setBackground(new Color(255,255,255));
+      kitchenButton.setForeground(new Color(121,76,36));
+      kitchenButton.setVerticalTextPosition(JButton.CENTER);
+      kitchenButton.setHorizontalTextPosition(JButton.CENTER);
+      kitchenButton.addActionListener(
+            new ActionListener(){
+               @Override
+               public void actionPerformed(ActionEvent e){
+                  //view orders
+                  viewOrders();                  
+               }});
+               
+      panel.add(menuButton, BorderLayout.CENTER);
+      panel.add(preferButton, BorderLayout.EAST);
+      panel.add(randomButton, BorderLayout.WEST);
+      panel.add(kitchenButton, BorderLayout.SOUTH);
+      frame.getContentPane().add(panel);
+      frame.pack();
+      frame.setLocationRelativeTo(null);         
+      frame.setVisible(true); 
+   }
+   
+   public static void viewOrders(){ //PROBLEMS, DOES NOT SHOW UP
+   //make screen of orders w boxlayout
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame detailFrame = new JFrame("Orders");
+      JPanel buttonPane = new JPanel();
+      buttonPane.setLayout(new BoxLayout(buttonPane,BoxLayout.Y_AXIS));
+      detailFrame.setPreferredSize(new Dimension(800,400));
+      detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      detailFrame.getContentPane().setBackground(new Color(125,83,40));
+                  
+      JLabel info = new JLabel("Order For:");
+      info.setForeground(new Color(255,255,255));
+      detailFrame.add(info);
+              
+      for(int i=0;i<orderQueue.size();i++){
+         for(int j=0;j<orderQueue.get(i).getOrder().size();j++){
+            Order singleOrder = orderQueue.get(i); 
+            JButton tempOrderButton = new JButton(orderQueue.get(i).getName());
+            tempOrderButton.addActionListener(
+               new ActionListener(){
+                  @Override
+                  public void actionPerformed(ActionEvent e){
+                     //open page of order details
+                     //add button to complete order and remove it from orderqueue
+                     JFrame.setDefaultLookAndFeelDecorated(true);
+                     JFrame orderDetailFrame = new JFrame("Order Details");
+                     orderDetailFrame.setLayout(new BorderLayout());
+                     orderDetailFrame.setPreferredSize(new Dimension(600,400));
+                     orderDetailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                     orderDetailFrame.getContentPane().setBackground(new Color(125,83,40));
+                                 
+                     String orderString = "<html>Order Details:<br/><br/>";
+                     for(int x=0;x<singleOrder.getOrder().size();x++){
+                        orderString += singleOrder.toString();
+                     }
+                     orderString += "<html>";
+                     JLabel orderDetailLabel = new JLabel(orderString);
+                     orderDetailFrame.getContentPane().add(orderDetailLabel);
+                  }});
+            buttonPane.add(tempOrderButton);
+         }
+      }
+      detailFrame.getContentPane().add(buttonPane);
+      detailFrame.pack();
+      detailFrame.setLocationRelativeTo(null);         
+      detailFrame.setVisible(true);
+   }
+   
+   public static void viewCart(){
+      JFrame.setDefaultLookAndFeelDecorated(true);
+      JFrame detailFrame = new JFrame("Your Cart");
+      detailFrame.setLayout(new BorderLayout());
+      detailFrame.setPreferredSize(new Dimension(600,400));
+      detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+      detailFrame.getContentPane().setBackground(new Color(125,83,40));
+                  
+      double priceTotal = 0.0;
+      String temp = "<html>Your Cart:<br/><br/>";
+      for(int j=0;j<cartList.size();j++){
+         priceTotal += cartList.get(j).getPrice();
+         temp += cartList.get(j).getName()+"\t"+cartList.get(j).getPrice()+"<br/><br/>";
+      }
+      temp += "<br/>Total: "+ priceTotal +"</html>";
+      JLabel info = new JLabel(temp);
+      info.setForeground(new Color(255,255,255));
+      detailFrame.getContentPane().add(info);
+                  
+      JButton checkOutButton = new JButton("Check Out");
+      checkOutButton.setBackground(new Color(255,255,255));
+      checkOutButton.setForeground(new Color(121,76,36));
+      checkOutButton.setVerticalTextPosition(JButton.CENTER);
+      checkOutButton.setHorizontalTextPosition(JButton.CENTER);
+                  
+      JButton editButton = new JButton("Edit Cart");
+      editButton.setBackground(new Color(255,255,255));
+      editButton.setForeground(new Color(121,76,36));
+      editButton.setVerticalTextPosition(JButton.CENTER);
+      editButton.setHorizontalTextPosition(JButton.CENTER);
+      editButton.addActionListener(
+         new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+            //edit cart
+                        
+            }
+         });
+                  
+      JPanel bottomPanel = new JPanel();
+      bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+      bottomPanel.add(editButton);
+      bottomPanel.add(checkOutButton);   
+      detailFrame.add(bottomPanel, BorderLayout.SOUTH);
+      detailFrame.pack();
+      detailFrame.setLocationRelativeTo(null);         
+      detailFrame.setVisible(true);
+   }
+   
+   public static void main(String[] args) throws IOException{
       
-      /*
-      //Test recommendations
-      user.addLike("chocolate","");
-      user.addDislike("whole milk","");
-      user.addRestriction("chocolate sauce]","");
+      readInMenu();
+      login();
       
-      for(MenuItem i: getRecommendedItems()){
-         System.out.println(i.getScore());
-         System.out.println(i);
-      }*/
    }   
 }
