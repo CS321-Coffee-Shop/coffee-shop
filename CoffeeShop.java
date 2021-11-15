@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.Scanner;
 import java.io.*;
-//the real one
+
 
 public class CoffeeShop{
 
@@ -1266,7 +1266,7 @@ public class CoffeeShop{
                            public void actionPerformed(ActionEvent e){
                            //complete order - remove from orderQueue - add to customer order history - 
                               orderQueue.remove(singleOrder);
-                              this.addOrderHistory(singleOrder);
+                              //addOrderHistory(singleOrder);
                            }
                         });                     
                      
