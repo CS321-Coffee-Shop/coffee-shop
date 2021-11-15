@@ -10,6 +10,7 @@ public class Customer{
    protected ArrayList<Ingredients> likes;
    protected ArrayList<Ingredients> dislikes;
    protected ArrayList<Ingredients> restrictions;
+   protected ArrayList<Order> orderHistory;
  
    public Customer(){
       firstName = "";
@@ -20,6 +21,7 @@ public class Customer{
       likes = new ArrayList<Ingredients>();
       dislikes = new ArrayList<Ingredients>();
       restrictions = new ArrayList<Ingredients>();
+      orderHistory = new ArrayList<Order>();
    }
    public Customer(String firstName, String lastName, String phoneNumber, String email, String password){
       this.firstName = firstName;
@@ -30,6 +32,7 @@ public class Customer{
       likes = new ArrayList<Ingredients>();
       dislikes = new ArrayList<Ingredients>();
       restrictions = new ArrayList<Ingredients>();
+      orderHistory = new ArrayList<Order>();
    }
    public String getName(){
       return firstName+" "+lastName;
@@ -164,5 +167,8 @@ public class Customer{
         }
         
         return names;
+    }
+    public void addOrderHistory(Order order){
+      orderHistory.add(order);      
     }
 }

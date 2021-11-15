@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Queue;
 import java.util.Scanner;
 import java.io.*;
-
+//the real one
 
 public class CoffeeShop{
 
@@ -495,9 +495,7 @@ public class CoffeeShop{
       frame.pack();
       frame.setLocationRelativeTo(null);         
       frame.setVisible(true); 
-   }
-
-//LOGIN__________________________________________________________________________________________________________________________________________________
+   }//LOGIN__________________________________________________________________________________________________________________________________________________
 
    public static void login(){
       
@@ -693,6 +691,7 @@ public class CoffeeShop{
                }
             }
          });
+         
    
       /*
       panel.add(username);
@@ -718,9 +717,7 @@ public class CoffeeShop{
       frame.setLocationRelativeTo(null);         
       frame.setVisible(true); 
    
-   }
-   
-//DISPLAY MENU FUNCTIONALITIES_______________________________________________________________________________________________________________________________________________________
+   }//DISPLAY MENU FUNCTIONALITIES_______________________________________________________________________________________________________________________________________________________
    
    /*
    Menu items will be read in from a text file dividing information by "|"
@@ -939,6 +936,7 @@ public class CoffeeShop{
             
       //Menu should be able to resize itself and add more pages if over specified limit
       JPanel panel = new JPanel();
+      
       panel.setLayout(new GridLayout((int)Math.sqrt(menu.size())+1,(int)Math.sqrt(menu.size())));
       JButton button;
       
@@ -946,6 +944,7 @@ public class CoffeeShop{
       for(int i=0;i<menu.size();i++){
       
          MenuItem tempItem = menu.getItem(i);
+        
         
          button = new JButton(tempItem.getName());
          button.setBackground(new Color(169,123,76));
@@ -957,6 +956,7 @@ public class CoffeeShop{
                @Override
                public void actionPerformed(ActionEvent e){
                //view menu item details
+               
                   JFrame.setDefaultLookAndFeelDecorated(true);
                   JFrame detailFrame = new JFrame(tempItem.getName());
                   detailFrame.setLayout(new BorderLayout());
@@ -972,6 +972,8 @@ public class CoffeeShop{
                   JLabel info = new JLabel(temp);
                   info.setForeground(new Color(255,255,255));
                   detailFrame.getContentPane().add(info);
+                  
+                  
                   
                   JButton cartButton = new JButton("Add to Cart");
                   cartButton.setBackground(new Color(255,255,255));
@@ -1117,6 +1119,7 @@ public class CoffeeShop{
                @Override
                public void actionPerformed(ActionEvent e){
                   //random drink generator
+                  displayItemDetails(getRandomItem());
                }});
          
       cartButton.setBackground(new Color(255,255,255));
@@ -1188,6 +1191,7 @@ public class CoffeeShop{
                @Override
                public void actionPerformed(ActionEvent e){
                   //random drink generator
+                  displayItemDetails(getRandomItem());
                }});
          
       kitchenButton.setBackground(new Color(255,255,255));
@@ -1250,6 +1254,23 @@ public class CoffeeShop{
                      orderString += "<html>";
                      JLabel orderDetailLabel = new JLabel(orderString);
                      orderDetailFrame.getContentPane().add(orderDetailLabel);
+                     
+                     JButton complete = new JButton("Complete");
+                     complete.setBackground(new Color(255,255,255));
+                     complete.setForeground(new Color(121,76,36));
+                     complete.setVerticalTextPosition(JButton.CENTER);
+                     complete.setHorizontalTextPosition(JButton.CENTER);
+                     complete.addActionListener(
+                        new ActionListener(){
+                           @Override
+                           public void actionPerformed(ActionEvent e){
+                           //complete order - remove from orderQueue - add to customer order history - 
+                              orderQueue.remove(singleOrder);
+                              this.addOrderHistory(singleOrder);
+                           }
+                        });                     
+                     
+                     orderDetailFrame.getContentPane().add(complete, BorderLayout.SOUTH);
                   }});
             buttonPane.add(tempOrderButton);
          }
