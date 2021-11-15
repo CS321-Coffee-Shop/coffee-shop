@@ -478,7 +478,7 @@ public class CoffeeShop{
                frame.dispose();
             }
          });
-                     
+
       JPanel buttonPane = new JPanel();
       buttonPane.setLayout(new GridLayout(2,2));
       buttonPane.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
@@ -780,6 +780,7 @@ public class CoffeeShop{
                }
             }
          }
+
          
          menu.addItem(itemName,price,ingArray);
       }      
@@ -825,8 +826,7 @@ public class CoffeeShop{
             public void actionPerformed(ActionEvent e){
                //add to cart
                cartList.add(item);
-            }});
-      
+            }});   
       return cartButton;
    }
    
@@ -839,7 +839,7 @@ public class CoffeeShop{
                frame.setVisible(false); 
                frame.dispose();
             }});
-      
+
       return backButton;
    }
    
@@ -944,8 +944,9 @@ public class CoffeeShop{
       for(int i=0;i<menu.size();i++){
       
          MenuItem tempItem = menu.getItem(i);
-        
-        
+         
+         //button = makeItemButton(tempItem); Item button function for easy reuse
+
          button = new JButton(tempItem.getName());
          button.setBackground(new Color(169,123,76));
          button.setForeground(Color.WHITE);
@@ -956,7 +957,8 @@ public class CoffeeShop{
                @Override
                public void actionPerformed(ActionEvent e){
                //view menu item details
-               
+               //JFrame detailFrame = makeItemFrame(tempItem); Item detail function for easy reuse
+
                   JFrame.setDefaultLookAndFeelDecorated(true);
                   JFrame detailFrame = new JFrame(tempItem.getName());
                   detailFrame.setLayout(new BorderLayout());
@@ -972,9 +974,9 @@ public class CoffeeShop{
                   JLabel info = new JLabel(temp);
                   info.setForeground(new Color(255,255,255));
                   detailFrame.getContentPane().add(info);
-                  
-                  
-                  
+           
+                  //JButton cartButton = makeCartButton(tempItem); Cart button function for easy reuse
+   
                   JButton cartButton = new JButton("Add to Cart");
                   cartButton.setBackground(new Color(255,255,255));
                   cartButton.setForeground(new Color(121,76,36));
@@ -1118,7 +1120,7 @@ public class CoffeeShop{
             new ActionListener(){
                @Override
                public void actionPerformed(ActionEvent e){
-                  //random drink generator
+               //random drink generator
                   displayItemDetails(getRandomItem());
                }});
          
@@ -1214,6 +1216,7 @@ public class CoffeeShop{
       frame.pack();
       frame.setLocationRelativeTo(null);         
       frame.setVisible(true); 
+
    }
    
    public static void viewOrders(){ //PROBLEMS, DOES NOT SHOW UP
@@ -1334,6 +1337,6 @@ public class CoffeeShop{
       
       readInMenu();
       login();
-      
+
    }   
 }
