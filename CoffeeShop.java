@@ -818,7 +818,7 @@ public class CoffeeShop{
       return button;
    }
    
-   public static JButton makeCartButton(MenuItem item){
+   public static JButton makeCartButton(MenuItem item, JFrame frame){
       JButton cartButton = makeWhiteButton("Add to Cart");
       cartButton.addActionListener(
          new ActionListener(){
@@ -826,6 +826,7 @@ public class CoffeeShop{
             public void actionPerformed(ActionEvent e){
                //add to cart
                cartList.add(item);
+               frame.dispose();
             }});   
       return cartButton;
    }
@@ -865,7 +866,7 @@ public class CoffeeShop{
    
    public static void displayItemDetails(MenuItem item){
       JFrame detailFrame = makeItemFrame(item);
-      JButton cartButton = makeCartButton(item);
+      JButton cartButton = makeCartButton(item, detailFrame);
                
       detailFrame.add(cartButton, BorderLayout.SOUTH);   
       detailFrame.pack();
@@ -1228,11 +1229,11 @@ public class CoffeeShop{
       detailFrame.setPreferredSize(new Dimension(800,400));
       detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
       detailFrame.getContentPane().setBackground(new Color(125,83,40));
-                  
+                        
       JLabel info = new JLabel("Order For:");
       info.setForeground(new Color(255,255,255));
-      detailFrame.add(info);
-              
+      detailFrame.add(info); 
+                    
       for(int i=0;i<orderQueue.size();i++){
          for(int j=0;j<orderQueue.get(i).getOrder().size();j++){
             Order singleOrder = orderQueue.get(i); 
