@@ -1,17 +1,21 @@
 class Employee {
     int password;
     String firstName, lastName;
+    
+    boolean isManager;
 
     public Employee(){
         password = 0;
         firstName = "";
         lastName = "";
+        isManager = false;
     }
 
     public Employee(int password, String firstName, String lastName){
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        isManager = false;
     }
 
     public String getLastName() {
