@@ -1280,6 +1280,7 @@ public class CoffeeShop{
                   
                }});
       
+      JPanel panel2 = new JPanel(new FlowLayout());
       JButton logOut = new JButton("Log Out");
       
       logOut.addActionListener(new ActionListener() {
@@ -1288,6 +1289,18 @@ public class CoffeeShop{
     		  login();
     	  }
       });
+      
+      JButton orderHistory = new JButton("Order History");
+      
+      orderHistory.addActionListener(new ActionListener() {
+    	  public void actionPerformed(ActionEvent e) {
+    		  viewOrderHistory();
+    	  }
+      });
+      
+      panel2.setBackground(new Color(150,90,11));
+      logOut.setBackground(new Color(255,255,255));
+      orderHistory.setBackground(new Color(255,255,255));
          
          //add buttons and panels to frame
       panel.add(menuButton, BorderLayout.CENTER);
@@ -1295,7 +1308,13 @@ public class CoffeeShop{
       panel.add(randomButton, BorderLayout.WEST);
       panel.add(cartButton, BorderLayout.SOUTH);
       panel.add(logOut, BorderLayout.NORTH);
+      
+      panel2.add(logOut);
+      panel2.add(orderHistory);
+      panel.add(panel2, BorderLayout.NORTH);
       frame.getContentPane().add(panel);
+      
+      
          
       frame.pack();
       frame.setLocationRelativeTo(null);         
@@ -1407,7 +1426,77 @@ public class CoffeeShop{
 	      frame.setLocationRelativeTo(null);         
 	      frame.setVisible(true); 
 	   }
-   
+   public static void viewOrderHistory(){ 
+	   //make screen of orders w boxlayout
+	      JFrame.setDefaultLookAndFeelDecorated(true);
+	      JFrame detailFrame = new JFrame("Order History");
+	      JPanel buttonPane = new JPanel();
+	      buttonPane.setBackground(new Color(125,83,40));
+	      buttonPane.setLayout(new BoxLayout(buttonPane,BoxLayout.Y_AXIS));
+	      detailFrame.setPreferredSize(new Dimension(800,400));
+	      detailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	      detailFrame.getContentPane().setBackground(new Color(125,83,40));
+	                        
+	      JLabel info = new JLabel("Order History:");
+	      info.setForeground(new Color(255,255,255));
+	      detailFrame.add(info, BorderLayout.NORTH); //specify where it's going to be added
+	                    
+	      for(int i=0;i<user.getOrderHistory().size();i++){
+	         //for(int j=0;j<orderQueue.get(i).getOrder().size();j++){
+	            Order singleOrder = user.getOrderHistory().get(i); 
+	            JButton tempOrderButton = new JButton("order " + (i+1));
+	            tempOrderButton.addActionListener(
+	               new ActionListener(){
+	                  @Override
+	                  public void actionPerformed(ActionEvent e){ 
+	                     //open page of order details
+	                     //add button to complete order and remove it from orderqueue
+	                     JFrame.setDefaultLookAndFeelDecorated(true);
+	                     JFrame orderDetailFrame = new JFrame("Order Details");
+	                     orderDetailFrame.setLayout(new BorderLayout());
+	                     orderDetailFrame.setPreferredSize(new Dimension(600,400));
+	                     orderDetailFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	                     orderDetailFrame.getContentPane().setBackground(new Color(125,83,40));
+	                                 
+	                     String orderString = "<html>Order Details:<br/><br/>";
+	                     //for(int x=0;x<singleOrder.getOrder().size();x++){
+	                        orderString += singleOrder.toString();
+	                     //}
+	                     orderString += "<html>";
+	                     JLabel orderDetailLabel = new JLabel(orderString);
+	                     orderDetailFrame.getContentPane().add(orderDetailLabel);
+	                     
+	                     JButton order = new JButton("Order Now");
+	                     order.setBackground(new Color(255,255,255));
+	                     order.setForeground(new Color(121,76,36));
+	                     order.setVerticalTextPosition(JButton.CENTER);
+	                     order.setHorizontalTextPosition(JButton.CENTER);
+	                     order.addActionListener(
+	                        new ActionListener(){
+	                           @Override
+	                           public void actionPerformed(ActionEvent e){
+	                           //complete order - remove from orderQueue - add to customer order history - 
+	                              orderQueue.add(singleOrder);
+	                              orderDetailFrame.dispose();
+	                              detailFrame.dispose();
+	                              //addOrderHistory(singleOrder);
+	                           }
+	                        });                     
+	                     
+	                     orderDetailFrame.getContentPane().add(order, BorderLayout.SOUTH);
+	                     orderDetailFrame.pack();
+	                     orderDetailFrame.setLocationRelativeTo(null);
+	                     orderDetailFrame.setVisible(true);
+	                  }});
+	            buttonPane.add(tempOrderButton); 
+	            
+	         //}
+	      }
+	      detailFrame.getContentPane().add(buttonPane, BorderLayout.CENTER);//specify where it's going to be added
+	      detailFrame.pack();
+	      detailFrame.setLocationRelativeTo(null);         
+	      detailFrame.setVisible(true);
+	   }
    public static void viewOrders(){ //PROBLEMS, DOES NOT SHOW UP
 	   //make screen of orders w boxlayout
 	      JFrame.setDefaultLookAndFeelDecorated(true);
@@ -1555,6 +1644,7 @@ public class CoffeeShop{
 	    	  public void actionPerformed(ActionEvent e) {
 	    		 orderQueue.add(newOrder);
              	 user.orderHistory.add(newOrder);
+             	 cartList = new ArrayList<MenuItem>();
              	 //orderQueue.add(new Order(priceTotal, user.getName(), cartList));
                  detailFrame.dispose();
 	    	  }

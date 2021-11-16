@@ -172,4 +172,7 @@ public class Customer{
     public void addOrderHistory(Order order){
         orderHistory.add(order);      
       }
+    public ArrayList<Order> getOrderHistory(){
+    	return orderHistory;
+    }
 }
