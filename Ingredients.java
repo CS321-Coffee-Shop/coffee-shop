@@ -15,6 +15,7 @@ public class Ingredients{
       this.ingredientName = ingredientName;
       this.description = description;
       this.isBase = false; 
+
    }
    public Ingredients(String ingredientName){
       this.ingredientName = ingredientName;
@@ -25,6 +26,7 @@ public class Ingredients{
 	      this.ingredientName = ingredientName;
 	      this.description = "";
 	      this.isBase = isBase;
+
    }
    public String getName(){
       return ingredientName;
