@@ -1177,6 +1177,7 @@ public class CoffeeShop{
                     	 //final double totalPrice = priceTotal;
                     	 orderQueue.add(newOrder);
                     	 user.orderHistory.add(newOrder);
+                    	 cartList = new ArrayList<MenuItem>();
                     	 //orderQueue.add(new Order(priceTotal, user.getName(), cartList));
                         detailFrame.dispose();
                      }
