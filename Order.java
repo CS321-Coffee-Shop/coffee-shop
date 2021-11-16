@@ -24,8 +24,10 @@ public class Order{
    public String toString(){
       String order = "";
       for(int i=0;i<orderList.size();i++){
-         order += orderList.get(i).getName()+"\n";
+         order += orderList.get(i).getName()+", ";
       }
+      order = order.substring(0, order.length()-2);
       return order;
    }
+
 }
